@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pasta antiga (o projeto foi achatado para a raiz); o editor por vezes
+# recria um ficheiro fantasma aqui — nunca deve ser rastreado pelo git
+/app/
