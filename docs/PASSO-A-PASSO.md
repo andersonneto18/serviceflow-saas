@@ -12,7 +12,9 @@
 
 **Estado atual:** Fase 1 em curso. Concluídos: Passo 1 (pnpm), Passo 3 (git init na raiz + `.gitignore` + repositório ligado e enviado para [github.com/andersonneto18/appglobal](https://github.com/andersonneto18/appglobal)), Passo 8 (projeto Next.js criado — inicialmente numa subpasta `app/`, depois achatado para a raiz do repositório), Passo 9 (servidor de dev confirmado a correr em `http://localhost:3000` a partir da raiz). Próximo: Passo 4 (conta Neon) e Passo 5 (conta Clerk).
 
-**Nota de estrutura:** o código do Next.js vive diretamente na raiz do repositório (não numa subpasta `app/`). Todos os comandos (`pnpm dev`, `pnpm add`, etc.) correm a partir da raiz do projeto.
+**Nota de estrutura:** o código do Next.js vive diretamente na raiz do repositório (não numa subpasta `app/`). Os documentos de planeamento (`DOCUMENTACAO.md`, `PASSO-A-PASSO.md`, `COMANDOS.md`, `interface-referencia.html`) estão organizados dentro de `docs/`. Todos os comandos (`pnpm dev`, `pnpm add`, etc.) correm a partir da raiz do projeto.
+
+**Aviso:** se o servidor de dev começar a devolver 404/500 sem motivo aparente, verificar se não existe uma pasta `app/` fantasma na raiz (`ls`) — já aconteceu ser recriada por um separador aberto no editor a autoguardar um ficheiro dessa pasta antiga. Basta apagá-la (`rm -rf app`) e reiniciar o `pnpm dev`.
 
 ---
 
