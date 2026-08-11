@@ -104,7 +104,9 @@ Prepara a versão final otimizada da app, pronta para produção (mais rápida, 
 
 Gera a estrutura inicial de um projeto Next.js — pastas, ficheiros de configuração, um "Hello World" já a funcionar. Por padrão faz perguntas uma a uma (nome, TypeScript, Tailwind, etc.), mas pode receber as respostas diretamente como parâmetros (`--flags`) para não ficar preso num assistente interativo.
 
-**Comando que usámos de facto** (projeto criado na subpasta `app/`):
+**Comando que usámos de facto:**
+
+> Nota: inicialmente criámos o projeto numa subpasta `app/` (por causa do nome `app` dado ao gerador), mas depois decidimos achatar a estrutura — hoje o código do Next.js vive diretamente na raiz do repositório, ao lado dos ficheiros de documentação.
 
 ```bash
 pnpm dlx create-next-app@latest app --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --use-pnpm --disable-git --yes

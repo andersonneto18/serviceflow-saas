@@ -10,7 +10,9 @@
 - Base de dados: Neon (Postgres serverless na cloud)
 - Package manager: pnpm
 
-**Estado atual:** Fase 1 em curso. Concluídos: Passo 1 (pnpm), Passo 3 (git init na raiz + `.gitignore` + repositório ligado e enviado para [github.com/andersonneto18/appglobal](https://github.com/andersonneto18/appglobal)), Passo 8 (projeto Next.js criado em `app/`), Passo 9 (servidor de dev confirmado a correr em `http://localhost:3000`). Próximo: Passo 4 (conta Neon) e Passo 5 (conta Clerk).
+**Estado atual:** Fase 1 em curso. Concluídos: Passo 1 (pnpm), Passo 3 (git init na raiz + `.gitignore` + repositório ligado e enviado para [github.com/andersonneto18/appglobal](https://github.com/andersonneto18/appglobal)), Passo 8 (projeto Next.js criado — inicialmente numa subpasta `app/`, depois achatado para a raiz do repositório), Passo 9 (servidor de dev confirmado a correr em `http://localhost:3000` a partir da raiz). Próximo: Passo 4 (conta Neon) e Passo 5 (conta Clerk).
+
+**Nota de estrutura:** o código do Next.js vive diretamente na raiz do repositório (não numa subpasta `app/`). Todos os comandos (`pnpm dev`, `pnpm add`, etc.) correm a partir da raiz do projeto.
 
 ---
 
