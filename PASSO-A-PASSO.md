@@ -5,11 +5,12 @@
 > Referência funcional/técnica completa: [DOCUMENTACAO.md](DOCUMENTACAO.md)
 
 **Decisões já tomadas:**
+
 - Nome da app: placeholder por agora (mudar mais tarde)
 - Base de dados: Neon (Postgres serverless na cloud)
 - Package manager: pnpm
 
-**Estado atual:** Fase 1 em curso. Concluídos: Passo 1 (pnpm instalado via `npm install -g pnpm`), Passo 8 (projeto Next.js criado em `app/`), Passo 9 (servidor de dev confirmado a correr em `http://localhost:3000`). Próximo: Passo 3 (git init) e Passo 4 (conta Neon).
+**Estado atual:** Fase 1 em curso. Concluídos: Passo 1 (pnpm), Passo 3 (git init na raiz + `.gitignore` + repositório ligado e enviado para [github.com/andersonneto18/appglobal](https://github.com/andersonneto18/appglobal)), Passo 8 (projeto Next.js criado em `app/`), Passo 9 (servidor de dev confirmado a correr em `http://localhost:3000`). Próximo: Passo 4 (conta Neon) e Passo 5 (conta Clerk).
 
 ---
 

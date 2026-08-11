@@ -50,6 +50,26 @@ Marca um ficheiro para entrar no próximo checkpoint.
 
 Cria o checkpoint (commit) com os ficheiros marcados, com uma mensagem a explicar o que mudou.
 
+### `git remote add origin <url>`
+
+Regista o endereço do repositório no GitHub como o "destino" para onde vamos enviar o código. Só se corre uma vez. *(já feito — `origin` aponta para `https://github.com/andersonneto18/appglobal.git`)*
+
+### `git push`
+
+Envia os commits guardados localmente para o GitHub. Na primeira vez usa-se `git push -u origin main` (o `-u` liga o ramo local `main` ao remoto, para os pushes seguintes não precisarem de repetir o destino); depois disso, basta `git push`.
+
+### `git pull`
+
+O inverso do push — traz para o computador alterações que estejam no GitHub e não localmente (útil se mexermos no código a partir de outro computador, ou mais tarde com mais pessoas na equipa).
+
+**O nosso ciclo de trabalho a partir de agora:** sempre que terminarmos algo com valor (uma funcionalidade, um passo do checklist), corremos os três em sequência:
+
+```bash
+git add .
+git commit -m "descrição do que mudou"
+git push
+```
+
 ---
 
 ## 3. pnpm — gestor de pacotes
