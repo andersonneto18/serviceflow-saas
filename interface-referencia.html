@@ -1,0 +1,900 @@
+<title>Interface — SaaS Gestão de Serviços</title>
+<style>
+  /* ---------- Tokens ---------- */
+  :root{
+    --bg:#F7F7F4;
+    --surface:#FFFFFF;
+    --surface-2:#F1F1EE;
+    --border:#E3E3DF;
+    --border-strong:#CBCBC5;
+    --ink:#15171A;
+    --ink-muted:#63666D;
+    --ink-faint:#9A9DA3;
+    --accent:#1F4FD8;
+    --accent-ink:#FFFFFF;
+    --accent-soft:#E8EDFC;
+    --success:#12805A;
+    --success-soft:#E4F5EC;
+    --warning:#966214;
+    --warning-soft:#FBF0DC;
+    --danger:#C23A2E;
+    --danger-soft:#FBE7E4;
+    --shadow:rgba(21,23,26,0.07);
+    --shadow-lg:rgba(21,23,26,0.14);
+
+    --radius-sm:6px;
+    --radius-md:10px;
+    --radius-lg:14px;
+
+    --fs-2xs:.6875rem;
+    --fs-xs:.75rem;
+    --fs-sm:.8125rem;
+    --fs-base:.875rem;
+    --fs-md:1rem;
+    --fs-lg:1.25rem;
+    --fs-xl:1.75rem;
+    --fs-2xl:2rem;
+
+    --font-ui:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-data:ui-monospace,"Cascadia Code","SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#101113;
+      --surface:#17191C;
+      --surface-2:#1D2024;
+      --border:#2A2D31;
+      --border-strong:#3A3E44;
+      --ink:#F1F2F0;
+      --ink-muted:#A0A4AA;
+      --ink-faint:#686C73;
+      --accent:#6C8CFF;
+      --accent-ink:#0B1220;
+      --accent-soft:#1C2440;
+      --success:#3FBE82;
+      --success-soft:#132C21;
+      --warning:#E4AC4C;
+      --warning-soft:#302408;
+      --danger:#E5766A;
+      --danger-soft:#391714;
+      --shadow:rgba(0,0,0,0.35);
+      --shadow-lg:rgba(0,0,0,0.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#101113;
+    --surface:#17191C;
+    --surface-2:#1D2024;
+    --border:#2A2D31;
+    --border-strong:#3A3E44;
+    --ink:#F1F2F0;
+    --ink-muted:#A0A4AA;
+    --ink-faint:#686C73;
+    --accent:#6C8CFF;
+    --accent-ink:#0B1220;
+    --accent-soft:#1C2440;
+    --success:#3FBE82;
+    --success-soft:#132C21;
+    --warning:#E4AC4C;
+    --warning-soft:#302408;
+    --danger:#E5766A;
+    --danger-soft:#391714;
+    --shadow:rgba(0,0,0,0.35);
+    --shadow-lg:rgba(0,0,0,0.55);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-ui);
+    font-size:var(--fs-base);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,p{margin:0;text-wrap:balance;}
+  button,input{font-family:inherit;font-size:inherit;color:inherit;}
+  button{cursor:pointer;}
+  ::selection{background:var(--accent-soft);}
+  *:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+  .num{font-family:var(--font-data);font-variant-numeric:tabular-nums;}
+
+  /* ---------- App shell ---------- */
+  .app{display:flex;min-height:100vh;}
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:236px;flex:0 0 236px;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+    display:flex;flex-direction:column;
+    height:100vh;position:sticky;top:0;
+    transition:width .18s ease,flex-basis .18s ease;
+  }
+  .sidebar.collapsed{width:68px;flex-basis:68px;}
+  .sidebar.collapsed .brand-name,
+  .sidebar.collapsed .nav-label,
+  .sidebar.collapsed .nav-item span,
+  .sidebar.collapsed .user-meta,
+  .sidebar.collapsed .user-menu-btn{display:none;}
+  .sidebar.collapsed .nav-item{justify-content:center;}
+  .sidebar.collapsed .sidebar-top{justify-content:center;}
+  .sidebar.collapsed .collapse-btn{transform:rotate(180deg);}
+
+  .sidebar-top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 16px;border-bottom:1px solid var(--border);
+    flex:0 0 auto;
+  }
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;}
+  .brand-mark{
+    width:28px;height:28px;border-radius:8px;flex:0 0 auto;
+    background:var(--ink);color:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:13px;letter-spacing:-.02em;
+  }
+  .brand-name{font-weight:650;font-size:var(--fs-md);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .collapse-btn{
+    width:26px;height:26px;flex:0 0 auto;border:none;background:transparent;
+    color:var(--ink-faint);border-radius:var(--radius-sm);
+    display:flex;align-items:center;justify-content:center;
+    transition:background .12s,color .12s,transform .18s ease;
+  }
+  .collapse-btn:hover{background:var(--surface-2);color:var(--ink-muted);}
+
+  .nav{flex:1 1 auto;overflow-y:auto;padding:14px 10px;}
+  .nav-group + .nav-group{margin-top:18px;}
+  .nav-label{
+    font-size:var(--fs-2xs);font-weight:650;color:var(--ink-faint);
+    text-transform:uppercase;letter-spacing:.06em;
+    padding:0 8px 6px;
+  }
+  .nav-item{
+    width:100%;display:flex;align-items:center;gap:10px;
+    padding:7px 8px;border:none;background:transparent;border-radius:var(--radius-sm);
+    color:var(--ink-muted);font-size:var(--fs-sm);font-weight:500;text-align:left;
+    transition:background .12s,color .12s;
+  }
+  .nav-item .i{width:17px;height:17px;flex:0 0 auto;}
+  .nav-item:hover{background:var(--surface-2);color:var(--ink);}
+  .nav-item.active{background:var(--accent-soft);color:var(--accent);}
+  .nav-item.disabled{cursor:default;}
+
+  .sidebar-user{
+    flex:0 0 auto;display:flex;align-items:center;gap:10px;
+    padding:14px 16px;border-top:1px solid var(--border);
+  }
+  .avatar{
+    width:30px;height:30px;border-radius:50%;flex:0 0 auto;
+    background:var(--accent);color:var(--accent-ink);
+    display:flex;align-items:center;justify-content:center;
+    font-size:var(--fs-xs);font-weight:650;
+  }
+  .user-meta{display:flex;flex-direction:column;min-width:0;flex:1 1 auto;}
+  .user-meta strong{font-size:var(--fs-sm);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .user-meta span{font-size:var(--fs-2xs);color:var(--ink-faint);}
+  .user-menu-btn{border:none;background:transparent;color:var(--ink-faint);width:22px;height:22px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .user-menu-btn:hover{background:var(--surface-2);}
+
+  /* ---------- Main ---------- */
+  .main{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;}
+  .topbar{
+    position:sticky;top:0;z-index:5;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 28px;border-bottom:1px solid var(--border);
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(6px);
+  }
+  .topbar-title{font-size:var(--fs-md);font-weight:650;letter-spacing:-.01em;}
+  .topbar-actions{display:flex;align-items:center;gap:10px;}
+  .search-trigger{
+    display:flex;align-items:center;gap:8px;
+    border:1px solid var(--border);background:var(--surface);
+    padding:7px 10px;border-radius:var(--radius-md);color:var(--ink-faint);font-size:var(--fs-sm);
+    transition:border-color .12s;
+  }
+  .search-trigger:hover{border-color:var(--border-strong);color:var(--ink-muted);}
+  .search-trigger .i{width:15px;height:15px;}
+  .search-trigger kbd{
+    font-family:var(--font-data);font-size:10px;background:var(--surface-2);
+    border:1px solid var(--border);border-radius:4px;padding:1px 5px;color:var(--ink-faint);
+  }
+  .icon-btn{
+    position:relative;width:32px;height:32px;border-radius:var(--radius-md);
+    border:1px solid var(--border);background:var(--surface);color:var(--ink-muted);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icon-btn:hover{background:var(--surface-2);}
+  .icon-btn .i{width:16px;height:16px;}
+  .icon-btn .dot{position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--danger);border:1.5px solid var(--surface);}
+
+  .create-wrap{position:relative;}
+  .btn-primary{
+    display:flex;align-items:center;gap:6px;
+    background:var(--ink);color:var(--bg);border:1px solid var(--ink);
+    padding:8px 14px;border-radius:var(--radius-md);font-size:var(--fs-sm);font-weight:600;
+    transition:opacity .12s;
+  }
+  .btn-primary:hover{opacity:.86;}
+  .create-menu{
+    position:absolute;right:0;top:calc(100% + 8px);width:206px;
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);
+    box-shadow:0 10px 30px var(--shadow-lg);padding:6px;z-index:20;
+  }
+  .create-menu button{
+    width:100%;text-align:left;padding:8px 9px;border:none;background:transparent;
+    border-radius:var(--radius-sm);font-size:var(--fs-sm);color:var(--ink);
+  }
+  .create-menu button:hover{background:var(--surface-2);}
+
+  .content{padding:26px 28px 60px;max-width:1180px;width:100%;margin:0 auto;}
+  .view[hidden]{display:none;}
+
+  /* ---------- Dashboard ---------- */
+  .greeting h1{font-size:var(--fs-2xl);font-weight:650;letter-spacing:-.02em;}
+  .greeting p{margin-top:4px;color:var(--ink-muted);font-size:var(--fs-sm);}
+
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px;}
+  @media (max-width:900px){.metrics{grid-template-columns:repeat(2,1fr);}}
+  .metric-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:16px 16px 15px;
+  }
+  .metric-card .label{font-size:var(--fs-xs);color:var(--ink-muted);font-weight:600;}
+  .metric-card .value{margin-top:8px;font-size:var(--fs-xl);font-weight:650;letter-spacing:-.02em;}
+  .metric-card .delta{margin-top:8px;display:flex;align-items:center;gap:5px;font-size:var(--fs-2xs);}
+  .chip{display:inline-flex;align-items:center;padding:2px 7px;border-radius:100px;font-size:var(--fs-2xs);font-weight:650;}
+  .chip.up{background:var(--success-soft);color:var(--success);}
+  .chip.neutral{background:var(--surface-2);color:var(--ink-muted);}
+  .delta .sub{color:var(--ink-faint);}
+
+  .split{display:grid;grid-template-columns:1.1fr 1.4fr;gap:16px;margin-top:16px;}
+  @media (max-width:900px){.split{grid-template-columns:1fr;}}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px 6px;}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;}
+  .panel-head h2{font-size:var(--fs-sm);font-weight:650;}
+  .panel-head .link{font-size:var(--fs-2xs);color:var(--ink-faint);font-weight:600;}
+
+  .agenda-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--border);}
+  .agenda-row:first-child{border-top:none;}
+  .agenda-time{font-family:var(--font-data);font-size:var(--fs-xs);color:var(--ink-muted);width:44px;flex:0 0 auto;}
+  .agenda-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 auto;}
+  .agenda-body{min-width:0;flex:1 1 auto;}
+  .agenda-body strong{display:block;font-size:var(--fs-sm);font-weight:600;}
+  .agenda-body span{font-size:var(--fs-2xs);color:var(--ink-faint);}
+  .agenda-status{font-size:var(--fs-2xs);color:var(--ink-faint);flex:0 0 auto;}
+
+  /* ---------- Tables ---------- */
+  .table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface);}
+  table{border-collapse:collapse;width:100%;min-width:640px;}
+  thead th{
+    text-align:left;font-size:var(--fs-2xs);font-weight:650;color:var(--ink-faint);
+    text-transform:uppercase;letter-spacing:.05em;
+    padding:11px 16px;border-bottom:1px solid var(--border);white-space:nowrap;
+  }
+  tbody td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:var(--fs-sm);vertical-align:middle;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr.clickable{cursor:pointer;transition:background .1s;}
+  tbody tr.clickable:hover{background:var(--surface-2);}
+  .cell-primary{font-weight:600;}
+  .cell-muted{color:var(--ink-muted);}
+  .cell-value{font-family:var(--font-data);font-variant-numeric:tabular-nums;}
+
+  .status-pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px 3px 7px;border-radius:100px;font-size:var(--fs-2xs);font-weight:650;white-space:nowrap;}
+  .status-pill .d{width:6px;height:6px;border-radius:50%;}
+  .status-pill.s-neutral{background:var(--surface-2);color:var(--ink-muted);} .status-pill.s-neutral .d{background:var(--ink-faint);}
+  .status-pill.s-accent{background:var(--accent-soft);color:var(--accent);} .status-pill.s-accent .d{background:var(--accent);}
+  .status-pill.s-warning{background:var(--warning-soft);color:var(--warning);} .status-pill.s-warning .d{background:var(--warning);}
+  .status-pill.s-success{background:var(--success-soft);color:var(--success);} .status-pill.s-success .d{background:var(--success);}
+  .status-pill.s-danger{background:var(--danger-soft);color:var(--danger);} .status-pill.s-danger .d{background:var(--danger);}
+
+  .toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+  .toolbar h1{font-size:var(--fs-lg);font-weight:650;letter-spacing:-.01em;}
+  .filters{display:flex;gap:6px;}
+  .filter-btn{padding:6px 12px;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--ink-muted);font-size:var(--fs-xs);font-weight:600;}
+  .filter-btn.active{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+
+  .person{display:flex;align-items:center;gap:10px;}
+  .person .mini-avatar{width:26px;height:26px;border-radius:50%;background:var(--surface-2);color:var(--ink-muted);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:650;flex:0 0 auto;}
+
+  /* ---------- Quote / Orçamentos view ---------- */
+  .quote-layout{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start;}
+  @media (max-width:900px){.quote-layout{grid-template-columns:1fr;}}
+  .quote-list .panel{padding:0;}
+  .quote-row{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-top:1px solid var(--border);}
+  .quote-row:first-child{border-top:none;}
+  .quote-row .meta strong{font-size:var(--fs-sm);font-weight:600;display:block;}
+  .quote-row .meta span{font-size:var(--fs-2xs);color:var(--ink-faint);}
+  .quote-row .right{display:flex;align-items:center;gap:10px;}
+  .quote-row .amount{font-family:var(--font-data);font-weight:650;font-size:var(--fs-sm);}
+
+  .builder-items{display:flex;flex-direction:column;}
+  .builder-row{display:grid;grid-template-columns:1fr 70px 90px;gap:10px;padding:10px 0;border-top:1px solid var(--border);align-items:center;}
+  .builder-row:first-child{border-top:none;}
+  .builder-row .name{font-size:var(--fs-sm);font-weight:550;}
+  .builder-row .qty,.builder-row .price{font-family:var(--font-data);font-size:var(--fs-sm);text-align:right;}
+  .builder-totals{margin-top:6px;padding-top:12px;border-top:1px dashed var(--border);display:flex;flex-direction:column;gap:6px;}
+  .builder-totals .row{display:flex;justify-content:space-between;font-size:var(--fs-sm);color:var(--ink-muted);}
+  .builder-totals .row.total{color:var(--ink);font-weight:700;font-size:var(--fs-md);padding-top:6px;border-top:1px solid var(--border);}
+  .builder-totals .num{font-family:var(--font-data);}
+  .builder-actions{display:flex;gap:8px;margin-top:16px;padding-bottom:16px;}
+  .btn-ghost{padding:9px 14px;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--surface);font-size:var(--fs-sm);font-weight:600;color:var(--ink-muted);}
+  .btn-ghost:hover{background:var(--surface-2);}
+  .btn-accent{padding:9px 14px;border-radius:var(--radius-md);border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font-size:var(--fs-sm);font-weight:650;}
+  .btn-accent:hover{opacity:.9;}
+
+  /* ---------- Drawer ---------- */
+  .scrim{position:fixed;inset:0;background:rgba(10,11,13,.32);z-index:30;}
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);
+    background:var(--surface);border-left:1px solid var(--border);
+    z-index:31;display:flex;flex-direction:column;box-shadow:-20px 0 40px var(--shadow-lg);
+  }
+  .drawer-head{padding:18px 20px 14px;border-bottom:1px solid var(--border);}
+  .drawer-head .top-row{display:flex;align-items:flex-start;justify-content:space-between;}
+  .drawer-head h2{font-size:var(--fs-md);font-weight:650;}
+  .drawer-head p{margin-top:3px;font-size:var(--fs-xs);color:var(--ink-faint);}
+  .drawer-close{width:26px;height:26px;border-radius:var(--radius-sm);border:none;background:transparent;color:var(--ink-faint);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .drawer-close:hover{background:var(--surface-2);}
+  .drawer-tabs{display:flex;gap:4px;padding:12px 20px 0;border-bottom:1px solid var(--border);overflow-x:auto;}
+  .drawer-tab{padding:8px 10px;font-size:var(--fs-xs);font-weight:650;color:var(--ink-faint);border:none;background:transparent;border-bottom:2px solid transparent;white-space:nowrap;}
+  .drawer-tab.active{color:var(--ink);border-bottom-color:var(--ink);}
+  .drawer-body{padding:18px 20px;overflow-y:auto;flex:1 1 auto;}
+  .drawer-pane[hidden]{display:none;}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;}
+  .info-grid .f span{display:block;font-size:var(--fs-2xs);color:var(--ink-faint);font-weight:650;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;}
+  .info-grid .f strong{font-size:var(--fs-sm);font-weight:550;}
+  .check-list{display:flex;flex-direction:column;gap:2px;}
+  .check-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--border);font-size:var(--fs-sm);}
+  .check-item:first-child{border-top:none;}
+  .check-box{width:17px;height:17px;border-radius:5px;border:1.5px solid var(--border-strong);display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:var(--accent-ink);}
+  .check-item.done .check-box{background:var(--ink);border-color:var(--ink);}
+  .check-item.done span{color:var(--ink-faint);text-decoration:line-through;}
+  .check-box .i{width:11px;height:11px;}
+  .mat-row{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--border);font-size:var(--fs-sm);}
+  .mat-row:first-child{border-top:none;}
+  .timeline{display:flex;flex-direction:column;}
+  .tl-step{display:flex;gap:10px;padding-bottom:16px;position:relative;}
+  .tl-step:last-child{padding-bottom:0;}
+  .tl-dot{width:9px;height:9px;border-radius:50%;background:var(--success);margin-top:4px;flex:0 0 auto;position:relative;z-index:1;}
+  .tl-step.pending .tl-dot{background:var(--border-strong);}
+  .tl-line{position:absolute;left:4px;top:12px;bottom:-4px;width:1px;background:var(--border);}
+  .tl-step:last-child .tl-line{display:none;}
+  .tl-body strong{display:block;font-size:var(--fs-sm);font-weight:600;}
+  .tl-body span{font-size:var(--fs-2xs);color:var(--ink-faint);}
+
+  /* ---------- Command palette ---------- */
+  .palette-scrim{position:fixed;inset:0;background:rgba(10,11,13,.4);z-index:40;display:flex;align-items:flex-start;justify-content:center;padding-top:14vh;}
+  .palette{width:min(560px,90vw);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 24px 60px var(--shadow-lg);overflow:hidden;}
+  .palette-input-row{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border);}
+  .palette-input-row .i{width:16px;height:16px;color:var(--ink-faint);flex:0 0 auto;}
+  #paletteInput{flex:1 1 auto;border:none;background:transparent;outline:none;font-size:var(--fs-md);color:var(--ink);}
+  #paletteInput::placeholder{color:var(--ink-faint);}
+  .palette-results{max-height:340px;overflow-y:auto;padding:8px;}
+  .palette-item{display:flex;align-items:center;justify-content:space-between;padding:10px 10px;border-radius:var(--radius-sm);}
+  .palette-item:hover{background:var(--surface-2);}
+  .palette-item .l strong{display:block;font-size:var(--fs-sm);font-weight:600;}
+  .palette-item .l span{font-size:var(--fs-2xs);color:var(--ink-faint);}
+  .palette-item .type{font-size:var(--fs-2xs);font-weight:650;color:var(--ink-faint);background:var(--surface-2);padding:2px 8px;border-radius:100px;}
+  .palette-empty{padding:24px 10px;text-align:center;color:var(--ink-faint);font-size:var(--fs-sm);}
+
+  .i{display:inline-flex;}
+  .i svg{width:100%;height:100%;}
+</style>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <span class="brand-name">Serviza</span>
+      </div>
+      <button class="collapse-btn" id="collapseBtn" aria-label="Recolher menu" data-icon="panel"></button>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-group">
+        <p class="nav-label">Workspace</p>
+        <button class="nav-item active" data-view="dashboard"><span class="i" data-icon="grid"></span><span>Dashboard</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="inbox"></span><span>Inbox</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="calendar"></span><span>Calendário</span></button>
+        <button class="nav-item" data-view="trabalhos"><span class="i" data-icon="briefcase"></span><span>Trabalhos</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="check2"></span><span>Tarefas</span></button>
+        <button class="nav-item" data-view="clientes"><span class="i" data-icon="users"></span><span>Clientes</span></button>
+        <button class="nav-item" data-view="orcamentos"><span class="i" data-icon="file"></span><span>Orçamentos</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="receipt"></span><span>Faturas</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="card"></span><span>Pagamentos</span></button>
+      </div>
+      <div class="nav-group">
+        <p class="nav-label">Gestão</p>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="tag"></span><span>Serviços</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="box"></span><span>Produtos &amp; Materiais</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="users"></span><span>Equipas</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="pin"></span><span>Rotas</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="bars"></span><span>Relatórios</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="zap"></span><span>Automação</span></button>
+      </div>
+      <div class="nav-group">
+        <p class="nav-label">Comunicação</p>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="msg"></span><span>Mensagens</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="globe"></span><span>Portal do cliente</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="bell"></span><span>Notificações</span></button>
+      </div>
+      <div class="nav-group">
+        <p class="nav-label">Sistema</p>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="plug"></span><span>Integrações</span></button>
+        <button class="nav-item disabled" data-view="none"><span class="i" data-icon="sliders"></span><span>Definições</span></button>
+      </div>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="avatar">AN</div>
+      <div class="user-meta"><strong>Anderson Neto</strong><span>Administrador</span></div>
+      <button class="user-menu-btn" data-icon="chevronRight" aria-label="Abrir menu de utilizador"></button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="topbar-actions">
+        <button class="search-trigger" id="searchTrigger">
+          <span class="i" data-icon="search"></span>
+          Pesquisar
+          <kbd>Ctrl K</kbd>
+        </button>
+        <button class="icon-btn" aria-label="Notificações">
+          <span class="i" data-icon="bell"></span>
+          <span class="dot"></span>
+        </button>
+        <div class="create-wrap">
+          <button class="btn-primary" id="createBtn">+ Criar</button>
+          <div class="create-menu" id="createMenu" hidden>
+            <button>Novo cliente</button>
+            <button>Novo trabalho</button>
+            <button>Novo orçamento</button>
+            <button>Nova tarefa</button>
+            <button>Nova fatura</button>
+            <button>Novo serviço</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- DASHBOARD -->
+      <section class="view" id="view-dashboard">
+        <div class="greeting">
+          <h1>Bom dia, Anderson 👋</h1>
+          <p>Aqui está o resumo do teu negócio.</p>
+        </div>
+
+        <div class="metrics">
+          <div class="metric-card">
+            <div class="label">Receita</div>
+            <div class="value num">€12.480</div>
+            <div class="delta"><span class="chip up">+12,4%</span><span class="sub">este mês</span></div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Trabalhos ativos</div>
+            <div class="value num">24</div>
+            <div class="delta"><span class="chip neutral">8</span><span class="sub">para esta semana</span></div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Orçamentos pendentes</div>
+            <div class="value num">€8.420</div>
+            <div class="delta"><span class="chip neutral">12</span><span class="sub">aguardando resposta</span></div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Clientes</div>
+            <div class="value num">184</div>
+            <div class="delta"><span class="chip up">+14</span><span class="sub">este mês</span></div>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="panel">
+            <div class="panel-head"><h2>Agenda de hoje</h2><span class="link">Ver calendário</span></div>
+            <div class="agenda-row">
+              <span class="agenda-time num">09:00</span>
+              <span class="agenda-dot"></span>
+              <div class="agenda-body"><strong>João Silva</strong><span>Instalação elétrica · Lisboa</span></div>
+              <span class="agenda-status">Confirmado</span>
+            </div>
+            <div class="agenda-row">
+              <span class="agenda-time num">11:30</span>
+              <span class="agenda-dot"></span>
+              <div class="agenda-body"><strong>Maria Costa</strong><span>Manutenção · Lisboa</span></div>
+              <span class="agenda-status">Confirmado</span>
+            </div>
+            <div class="agenda-row">
+              <span class="agenda-time num">14:00</span>
+              <span class="agenda-dot"></span>
+              <div class="agenda-body"><strong>Pedro Santos</strong><span>Reparação · Sintra</span></div>
+              <span class="agenda-status">Pendente</span>
+            </div>
+            <div class="agenda-row">
+              <span class="agenda-time num">16:30</span>
+              <span class="agenda-dot"></span>
+              <div class="agenda-body"><strong>Ana Martins</strong><span>Visita técnica · Cascais</span></div>
+              <span class="agenda-status">Confirmado</span>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h2>Trabalhos recentes</h2><span class="link">Ver todos</span></div>
+            <div class="table-wrap" style="border:none;border-radius:0;">
+              <table style="min-width:0;">
+                <tbody>
+                  <tr><td class="cell-primary">João Silva</td><td class="cell-muted">Instalação elétrica</td><td><span class="status-pill s-accent"><span class="d"></span>Em execução</span></td><td class="cell-value" style="text-align:right;">€450</td></tr>
+                  <tr><td class="cell-primary">Maria Costa</td><td class="cell-muted">Manutenção jardim</td><td><span class="status-pill s-neutral"><span class="d"></span>Agendado</span></td><td class="cell-value" style="text-align:right;">€120</td></tr>
+                  <tr><td class="cell-primary">Pedro Santos</td><td class="cell-muted">Reparação</td><td><span class="status-pill s-success"><span class="d"></span>Concluído</span></td><td class="cell-value" style="text-align:right;">€280</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRABALHOS -->
+      <section class="view" id="view-trabalhos" hidden>
+        <div class="toolbar">
+          <h1>Trabalhos</h1>
+          <div class="filters">
+            <button class="filter-btn active">Todos</button>
+            <button class="filter-btn">Agendados</button>
+            <button class="filter-btn">Em execução</button>
+            <button class="filter-btn">Concluídos</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Cliente</th><th>Serviço</th><th>Responsável</th><th>Data</th><th>Estado</th><th style="text-align:right;">Valor</th></tr></thead>
+            <tbody>
+              <tr class="clickable" data-job="joao">
+                <td class="cell-primary">João Silva</td><td class="cell-muted">Instalação elétrica</td>
+                <td><div class="person"><span class="mini-avatar">AN</span>Anderson</div></td>
+                <td class="cell-muted num">12 Ago</td>
+                <td><span class="status-pill s-accent"><span class="d"></span>Em execução</span></td>
+                <td class="cell-value" style="text-align:right;">€450</td>
+              </tr>
+              <tr class="clickable" data-job="maria">
+                <td class="cell-primary">Maria Costa</td><td class="cell-muted">Manutenção jardim</td>
+                <td><div class="person"><span class="mini-avatar">CL</span>Carlos</div></td>
+                <td class="cell-muted num">12 Ago</td>
+                <td><span class="status-pill s-neutral"><span class="d"></span>Agendado</span></td>
+                <td class="cell-value" style="text-align:right;">€120</td>
+              </tr>
+              <tr class="clickable" data-job="pedro">
+                <td class="cell-primary">Pedro Santos</td><td class="cell-muted">Reparação</td>
+                <td><div class="person"><span class="mini-avatar">AN</span>Anderson</div></td>
+                <td class="cell-muted num">13 Ago</td>
+                <td><span class="status-pill s-success"><span class="d"></span>Concluído</span></td>
+                <td class="cell-value" style="text-align:right;">€280</td>
+              </tr>
+              <tr class="clickable" data-job="ana">
+                <td class="cell-primary">Ana Martins</td><td class="cell-muted">Visita técnica</td>
+                <td><div class="person"><span class="mini-avatar">CL</span>Carlos</div></td>
+                <td class="cell-muted num">14 Ago</td>
+                <td><span class="status-pill s-warning"><span class="d"></span>Em pausa</span></td>
+                <td class="cell-value" style="text-align:right;">€90</td>
+              </tr>
+              <tr class="clickable" data-job="rui">
+                <td class="cell-primary">Rui Fonseca</td><td class="cell-muted">Diagnóstico canalização</td>
+                <td><div class="person"><span class="mini-avatar">AN</span>Anderson</div></td>
+                <td class="cell-muted num">15 Ago</td>
+                <td><span class="status-pill s-danger"><span class="d"></span>Cancelado</span></td>
+                <td class="cell-value" style="text-align:right;">€0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CLIENTES -->
+      <section class="view" id="view-clientes" hidden>
+        <div class="toolbar">
+          <h1>Clientes</h1>
+          <div class="filters">
+            <button class="filter-btn active">Todos</button>
+            <button class="filter-btn">Ativos</button>
+            <button class="filter-btn">Potenciais</button>
+            <button class="filter-btn">Inativos</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Cliente</th><th>Contacto</th><th>Localização</th><th>Trabalhos</th><th>Valor total</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr class="clickable">
+                <td><div class="person"><span class="mini-avatar">JS</span><span class="cell-primary">João Silva</span></div></td>
+                <td class="cell-muted">+351 912 345 678</td>
+                <td class="cell-muted">Lisboa</td>
+                <td class="cell-value">3</td>
+                <td class="cell-value">€1.240</td>
+                <td><span class="status-pill s-success"><span class="d"></span>Ativo</span></td>
+              </tr>
+              <tr class="clickable">
+                <td><div class="person"><span class="mini-avatar">MC</span><span class="cell-primary">Maria Costa</span></div></td>
+                <td class="cell-muted">+351 934 112 233</td>
+                <td class="cell-muted">Lisboa</td>
+                <td class="cell-value">5</td>
+                <td class="cell-value">€2.010</td>
+                <td><span class="status-pill s-success"><span class="d"></span>Ativo</span></td>
+              </tr>
+              <tr class="clickable">
+                <td><div class="person"><span class="mini-avatar">PS</span><span class="cell-primary">Pedro Santos</span></div></td>
+                <td class="cell-muted">+351 967 556 890</td>
+                <td class="cell-muted">Sintra</td>
+                <td class="cell-value">1</td>
+                <td class="cell-value">€280</td>
+                <td><span class="status-pill s-warning"><span class="d"></span>Potencial</span></td>
+              </tr>
+              <tr class="clickable">
+                <td><div class="person"><span class="mini-avatar">AM</span><span class="cell-primary">Ana Martins</span></div></td>
+                <td class="cell-muted">+351 921 774 402</td>
+                <td class="cell-muted">Cascais</td>
+                <td class="cell-value">2</td>
+                <td class="cell-value">€610</td>
+                <td><span class="status-pill s-neutral"><span class="d"></span>Inativo</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ORÇAMENTOS -->
+      <section class="view" id="view-orcamentos" hidden>
+        <div class="toolbar"><h1>Orçamentos</h1></div>
+        <div class="quote-layout">
+          <div class="quote-list">
+            <div class="panel-head" style="padding-bottom:8px;"><h2>Enviados recentemente</h2></div>
+            <div class="panel">
+              <div class="quote-row">
+                <div class="meta"><strong>Orçamento #1042</strong><span>João Silva · Instalação de 6 tomadas</span></div>
+                <div class="right"><span class="amount">€285</span><span class="status-pill s-success"><span class="d"></span>Aceite</span></div>
+              </div>
+              <div class="quote-row">
+                <div class="meta"><strong>Orçamento #1043</strong><span>Maria Costa · Manutenção de jardim</span></div>
+                <div class="right"><span class="amount">€120</span><span class="status-pill s-accent"><span class="d"></span>Enviado</span></div>
+              </div>
+              <div class="quote-row">
+                <div class="meta"><strong>Orçamento #1044</strong><span>Rui Fonseca · Diagnóstico canalização</span></div>
+                <div class="right"><span class="amount">€60</span><span class="status-pill s-neutral"><span class="d"></span>Rascunho</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h2>Novo orçamento · João Silva</h2></div>
+            <div class="builder-items">
+              <div class="builder-row"><span class="name">Instalação elétrica</span><span class="qty">1</span><span class="price">€350</span></div>
+              <div class="builder-row"><span class="name">Materiais</span><span class="qty">1</span><span class="price">€120</span></div>
+              <div class="builder-row"><span class="name">Mão de obra</span><span class="qty">1</span><span class="price">€280</span></div>
+            </div>
+            <div class="builder-totals">
+              <div class="row"><span>Subtotal</span><span class="num">€750,00</span></div>
+              <div class="row"><span>IVA (23%)</span><span class="num">€172,50</span></div>
+              <div class="row total"><span>Total</span><span class="num">€922,50</span></div>
+            </div>
+            <div class="builder-actions">
+              <button class="btn-ghost">Guardar rascunho</button>
+              <button class="btn-accent">Enviar ao cliente</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- DRAWER: detalhe do trabalho -->
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="drawer" id="jobDrawer" hidden>
+    <div class="drawer-head">
+      <div class="top-row">
+        <div>
+          <h2 id="drawerTitle">Instalação de 6 tomadas</h2>
+          <p id="drawerSub">João Silva · Lisboa · Quarta-feira, 10:00</p>
+        </div>
+        <button class="drawer-close" id="drawerClose" data-icon="x" aria-label="Fechar"></button>
+      </div>
+    </div>
+    <div class="drawer-tabs">
+      <button class="drawer-tab active" data-pane="info">Informações</button>
+      <button class="drawer-tab" data-pane="tasks">Tarefas</button>
+      <button class="drawer-tab" data-pane="materials">Materiais</button>
+      <button class="drawer-tab" data-pane="notes">Notas</button>
+      <button class="drawer-tab" data-pane="timeline">Timeline</button>
+    </div>
+    <div class="drawer-body">
+      <div class="drawer-pane" data-pane="info">
+        <div class="info-grid">
+          <div class="f"><span>Cliente</span><strong>João Silva</strong></div>
+          <div class="f"><span>Telefone</span><strong>+351 912 345 678</strong></div>
+          <div class="f"><span>Morada</span><strong>Rua X, Lisboa</strong></div>
+          <div class="f"><span>Serviço</span><strong>Instalação elétrica</strong></div>
+          <div class="f"><span>Data</span><strong>Quarta-feira</strong></div>
+          <div class="f"><span>Hora</span><strong>10:00</strong></div>
+          <div class="f"><span>Responsável</span><strong>Anderson Neto</strong></div>
+          <div class="f"><span>Valor</span><strong class="num">€285,00</strong></div>
+        </div>
+      </div>
+      <div class="drawer-pane" data-pane="tasks" hidden>
+        <div class="check-list">
+          <div class="check-item done"><span class="check-box" data-icon="check"></span><span>Contactar cliente</span></div>
+          <div class="check-item done"><span class="check-box" data-icon="check"></span><span>Preparar materiais</span></div>
+          <div class="check-item"><span class="check-box"></span><span>Executar serviço</span></div>
+          <div class="check-item"><span class="check-box"></span><span>Fotografias finais</span></div>
+          <div class="check-item"><span class="check-box"></span><span>Fechar trabalho</span></div>
+        </div>
+      </div>
+      <div class="drawer-pane" data-pane="materials" hidden>
+        <div class="mat-row"><span>Cabo elétrico</span><span class="num">€35</span></div>
+        <div class="mat-row"><span>Tomada (x6)</span><span class="num">€60</span></div>
+        <div class="mat-row"><span>Disjuntor</span><span class="num">€20</span></div>
+      </div>
+      <div class="drawer-pane" data-pane="notes" hidden>
+        <p style="font-size:var(--fs-sm);color:var(--ink-muted);line-height:1.6;">Cliente pediu para tocar à campainha em vez de bater à porta. Quadro elétrico fica na garagem, acesso pelo lado direito da casa.</p>
+      </div>
+      <div class="drawer-pane" data-pane="timeline" hidden>
+        <div class="timeline">
+          <div class="tl-step"><span class="tl-dot"></span><span class="tl-line"></span><div class="tl-body"><strong>Criado</strong><span>Segunda-feira, 09:12</span></div></div>
+          <div class="tl-step"><span class="tl-dot"></span><span class="tl-line"></span><div class="tl-body"><strong>Orçamento aprovado</strong><span>Segunda-feira, 18:40</span></div></div>
+          <div class="tl-step"><span class="tl-dot"></span><span class="tl-line"></span><div class="tl-body"><strong>Agendado</strong><span>Quarta-feira, 10:00</span></div></div>
+          <div class="tl-step pending"><span class="tl-dot"></span><span class="tl-line"></span><div class="tl-body"><strong>Em execução</strong><span>Em curso</span></div></div>
+          <div class="tl-step pending"><span class="tl-dot"></span><span class="tl-line"></span><div class="tl-body"><strong>Concluído</strong><span>Pendente</span></div></div>
+          <div class="tl-step pending"><div class="tl-body"><strong>Pago</strong><span>Pendente</span></div></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- COMMAND PALETTE -->
+  <div class="palette-scrim" id="paletteScrim" hidden>
+    <div class="palette" role="dialog" aria-modal="true" aria-label="Pesquisa global">
+      <div class="palette-input-row">
+        <span class="i" data-icon="search"></span>
+        <input id="paletteInput" placeholder="Pesquisar clientes, trabalhos, orçamentos, faturas..." autocomplete="off" />
+        <kbd style="font-family:var(--font-data);font-size:10px;color:var(--ink-faint);">Esc</kbd>
+      </div>
+      <div class="palette-results" id="paletteResults"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var ICONS = {
+    grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>',
+    inbox:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4l2 3h4l2-3h4"/><path d="M5 12 4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5L19 12v6a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18Z"/></svg>',
+    calendar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
+    briefcase:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12" rx="2"/><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5M3 12.5h18"/></svg>',
+    check2:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8.5 12.5 2.3 2.3L15.5 9.5"/></svg>',
+    users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 20c.6-3.2 2.9-5 5.5-5s4.9 1.8 5.5 5"/><path d="M15.5 6.2a3 3 0 0 1 0 5.7M20.5 20c-.4-2.4-1.7-4-3.7-4.7"/></svg>',
+    file:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 19V5A1.5 1.5 0 0 1 7 3.5Z"/><path d="M14 3.5V8h4M9 13h6M9 16.5h6"/></svg>',
+    receipt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h12v17l-2.3-1.5L14 20.5l-2-1.5-2 1.5-1.7-1.5L6 20.5Z"/><path d="M9 8h6M9 11.5h6"/></svg>',
+    card:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3 9.5h18"/><path d="M6.5 14.5h4"/></svg>',
+    tag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 3.5H5A1.5 1.5 0 0 0 3.5 5v6.5a1.5 1.5 0 0 0 .44 1.06l8.5 8.5a1.5 1.5 0 0 0 2.12 0l6.5-6.5a1.5 1.5 0 0 0 0-2.12l-8.5-8.5a1.5 1.5 0 0 0-1.06-.44Z"/><circle cx="8.3" cy="8.3" r="1.3"/></svg>',
+    box:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 7v10l8 4 8-4V7Z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg>',
+    pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0C5 14.5 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.3"/></svg>',
+    bars:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>',
+    zap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 14h6L11 22l8.5-12h-6Z"/></svg>',
+    msg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16v11H9l-4 4V16.5H4Z"/></svg>',
+    globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.3 3.6 5.3 3.6 8.5s-1.2 6.2-3.6 8.5c-2.4-2.3-3.6-5.3-3.6-8.5S9.6 5.8 12 3.5Z"/></svg>',
+    bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V10.5a6 6 0 0 1 12 0V17l1.8 2.2H4.2Z"/><path d="M10.2 20.5a1.9 1.9 0 0 0 3.6 0"/></svg>',
+    plug:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v5M15 3v5M6.5 8h11v3.5a5.5 5.5 0 0 1-11 0Z"/><path d="M12 15.5V21"/></svg>',
+    sliders:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h9M17 6h3M4 12h3M9 12h11M4 18h13M21 18h-1"/><circle cx="15" cy="6" r="2"/><circle cx="7" cy="12" r="2"/><circle cx="19" cy="18" r="2"/></svg>',
+    search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.35-4.35"/></svg>',
+    panel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M9.5 4.5v15"/></svg>',
+    chevronRight:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>',
+    x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4.5 4.5L19 8"/></svg>'
+  };
+  document.querySelectorAll('[data-icon]').forEach(function(el){
+    var name = el.getAttribute('data-icon');
+    if (ICONS[name]) el.innerHTML = ICONS[name];
+  });
+
+  // Sidebar collapse
+  var sidebar = document.getElementById('sidebar');
+  document.getElementById('collapseBtn').addEventListener('click', function(){
+    sidebar.classList.toggle('collapsed');
+  });
+
+  // View switching
+  var titles = {dashboard:'Dashboard', trabalhos:'Trabalhos', clientes:'Clientes', orcamentos:'Orçamentos'};
+  document.querySelectorAll('.nav-item[data-view]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var view = btn.getAttribute('data-view');
+      if (view === 'none') return;
+      document.querySelectorAll('.nav-item').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelectorAll('.view').forEach(function(v){ v.hidden = true; });
+      document.getElementById('view-' + view).hidden = false;
+      document.getElementById('topbarTitle').textContent = titles[view];
+    });
+  });
+
+  // Create dropdown
+  var createBtn = document.getElementById('createBtn');
+  var createMenu = document.getElementById('createMenu');
+  createBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    createMenu.hidden = !createMenu.hidden;
+  });
+  document.addEventListener('click', function(){ createMenu.hidden = true; });
+
+  // Job drawer
+  var scrim = document.getElementById('scrim');
+  var drawer = document.getElementById('jobDrawer');
+  function openDrawer(){ scrim.hidden = false; drawer.hidden = false; }
+  function closeDrawer(){ scrim.hidden = true; drawer.hidden = true; }
+  document.querySelectorAll('tr[data-job]').forEach(function(row){
+    row.addEventListener('click', openDrawer);
+  });
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  scrim.addEventListener('click', closeDrawer);
+
+  document.querySelectorAll('.drawer-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.drawer-tab').forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      var pane = tab.getAttribute('data-pane');
+      document.querySelectorAll('.drawer-pane').forEach(function(p){
+        p.hidden = p.getAttribute('data-pane') !== pane;
+      });
+    });
+  });
+
+  // Command palette
+  var paletteScrim = document.getElementById('paletteScrim');
+  var paletteInput = document.getElementById('paletteInput');
+  var paletteResults = document.getElementById('paletteResults');
+  var DATA = [
+    {type:'Cliente', title:'João Silva', meta:'3 trabalhos · 2 orçamentos · 4 faturas'},
+    {type:'Cliente', title:'Maria Costa', meta:'5 trabalhos · Lisboa'},
+    {type:'Trabalho', title:'Instalação de 6 tomadas', meta:'João Silva · Quarta-feira, 10:00'},
+    {type:'Orçamento', title:'Orçamento #1042', meta:'€285 · Aceite'},
+    {type:'Fatura', title:'Fatura #1042', meta:'€285 · Paga'},
+    {type:'Serviço', title:'Instalação elétrica', meta:'€80/h'}
+  ];
+  function renderResults(q){
+    var query = (q || '').toLowerCase().trim();
+    var list = query ? DATA.filter(function(d){ return (d.title + ' ' + d.meta).toLowerCase().indexOf(query) !== -1; }) : DATA;
+    if (!list.length){
+      paletteResults.innerHTML = '<div class="palette-empty">Sem resultados para "' + query + '"</div>';
+      return;
+    }
+    paletteResults.innerHTML = list.map(function(d){
+      return '<div class="palette-item"><div class="l"><strong>' + d.title + '</strong><span>' + d.meta + '</span></div><span class="type">' + d.type + '</span></div>';
+    }).join('');
+  }
+  function openPalette(){
+    paletteScrim.hidden = false;
+    paletteInput.value = '';
+    renderResults('');
+    setTimeout(function(){ paletteInput.focus(); }, 0);
+  }
+  function closePalette(){ paletteScrim.hidden = true; }
+  document.getElementById('searchTrigger').addEventListener('click', openPalette);
+  paletteScrim.addEventListener('click', function(e){ if (e.target === paletteScrim) closePalette(); });
+  paletteInput.addEventListener('input', function(){ renderResults(paletteInput.value); });
+  document.addEventListener('keydown', function(e){
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
+      e.preventDefault();
+      paletteScrim.hidden ? openPalette() : closePalette();
+    } else if (e.key === 'Escape'){
+      if (!paletteScrim.hidden) closePalette();
+      if (!drawer.hidden) closeDrawer();
+    }
+  });
+})();
+</script>

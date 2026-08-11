@@ -1,0 +1,41 @@
+# dependências
+/app/node_modules
+/app/.pnp
+/app/.pnp.*
+/app/.yarn/*
+!/app/.yarn/patches
+!/app/.yarn/plugins
+!/app/.yarn/releases
+!/app/.yarn/versions
+
+# testes
+/app/coverage
+
+# next.js
+/app/.next/
+/app/out/
+
+# produção
+/app/build
+
+# diversos
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# variáveis de ambiente — NUNCA commitar segredos
+.env
+.env.local
+.env.*.local
+
+# vercel
+/app/.vercel
+
+# typescript
+*.tsbuildinfo
+/app/next-env.d.ts
