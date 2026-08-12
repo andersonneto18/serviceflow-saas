@@ -20,10 +20,10 @@
 
 ## Fase 0 — Preparar a máquina
 
-- [ ] **Passo 1.** Resolver instalação do `pnpm` (corepack falhou com EPERM). Alternativa: `npm install -g pnpm` ou correr o PowerShell como administrador.
-- [ ] **Passo 2.** Confirmar versões: `node -v` (já confirmado: v24.17.0), `pnpm -v`, `git --version`.
-- [ ] **Passo 3.** Inicializar repositório git no diretório do projeto (`git init`) — ainda não é um repo git.
-- [ ] **Passo 4.** Criar conta e projeto novo no [Neon](https://neon.tech) (Postgres) e guardar a connection string.
+- [x] **Passo 1.** Resolver instalação do `pnpm` (corepack falhou com EPERM). Alternativa: `npm install -g pnpm` ou correr o PowerShell como administrador.
+- [x] **Passo 2.** Confirmar versões: `node -v` (v24.17.0), `pnpm -v` (11.21.0), `git --version` (2.54.0).
+- [x] **Passo 3.** Inicializar repositório git no diretório do projeto (`git init`).
+- [x] **Passo 4.** Criar conta e projeto novo no [Neon](https://neon.tech) (Postgres) e guardar a connection string — guardada em `.env.local` (`DATABASE_URL`).
 - [ ] **Passo 5.** Criar conta no [Clerk](https://clerk.com) e criar uma aplicação nova (guardar as chaves de API).
 - [ ] **Passo 6.** Criar conta no [Cloudflare](https://cloudflare.com) para o R2 (pode ser feito mais tarde, só é preciso na Fase 3).
 - [ ] **Passo 7.** Criar conta no [Vercel](https://vercel.com) ligada ao GitHub (para deploy, pode ser feito mais tarde).
@@ -32,12 +32,12 @@
 
 ## Fase 1 — Fundação do projeto
 
-- [ ] **Passo 8.** Criar o projeto Next.js com TypeScript: `pnpm create next-app@latest`.
-- [ ] **Passo 9.** Verificar que o projeto arranca localmente (`pnpm dev`) e abre no browser.
-- [ ] **Passo 10.** Configurar Tailwind CSS (normalmente já vem incluído no `create-next-app`).
-- [ ] **Passo 11.** Instalar e configurar `shadcn/ui` (`pnpm dlx shadcn@latest init`).
-- [ ] **Passo 12.** Adicionar os primeiros componentes shadcn (`button`, `input`, `card`, `dialog`, `dropdown-menu`, `table`, `sidebar`).
-- [ ] **Passo 13.** Criar ficheiro `.env.local` com as variáveis de ambiente (Neon connection string, chaves Clerk) e adicionar `.env.local` ao `.gitignore`.
+- [x] **Passo 8.** Criar o projeto Next.js com TypeScript: `pnpm create next-app@latest`.
+- [x] **Passo 9.** Verificar que o projeto arranca localmente (`pnpm dev`) e abre no browser.
+- [x] **Passo 10.** Configurar Tailwind CSS (já veio incluído no `create-next-app`).
+- [x] **Passo 11.** Instalar e configurar `shadcn/ui` (`pnpm dlx shadcn@latest init`) — preset "base-nova", cor de destaque azul definida em `globals.css`.
+- [x] **Passo 12.** Adicionar os primeiros componentes shadcn (`avatar`, `badge`, `card`, `table`, `input`, `separator`, `sheet`, `dropdown-menu`, `tabs`, `command`, `sidebar`, `tooltip`, `button`).
+- [x] **Passo 13.** Criar ficheiro `.env.local` com as variáveis de ambiente (Neon `DATABASE_URL`) — já protegido pelo `.gitignore` (`.env*`). Chaves Clerk entram quando fizermos o Passo 5.
 - [ ] **Passo 14.** Instalar Drizzle ORM (`drizzle-orm`, `drizzle-kit`) e o driver Postgres (`@neondatabase/serverless` ou `pg`).
 - [ ] **Passo 15.** Criar `drizzle.config.ts` a apontar para a base de dados Neon.
 - [ ] **Passo 16.** Criar a pasta `db/schema` e o ficheiro de conexão à base de dados (`db/index.ts`).
