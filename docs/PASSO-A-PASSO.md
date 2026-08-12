@@ -10,7 +10,7 @@
 - Base de dados: Neon (Postgres serverless na cloud)
 - Package manager: pnpm
 
-**Estado atual:** Fase 1 concluída (Passos 1-18: fundação, shadcn/ui, Neon, Clerk, Drizzle). Fase 2: layout com sidebar/dashboard feito (Passos 27-29, com dados de exemplo) e schema completo da base de dados aplicado ao Neon (Passos 21-26, 13 tabelas). Falta: Passo 19 (zod/react-hook-form), Passo 30-31 (fluxo de criação de workspace + isolamento multi-tenant nas queries), e depois ligar as páginas (Clientes, Trabalhos, etc.) aos dados reais em vez de exemplos fixos (Passo 32+).
+**Estado atual:** Fase 1 concluída (Passos 1-18). Fase 2: layout com sidebar/dashboard feito (Passos 27-29, com dados de exemplo), schema completo aplicado ao Neon (Passos 21-26, 13 tabelas), e sincronização Clerk↔BD pronta (Passos 30-31) — **falta testar com um sign-up real na app**. Depois disso: Passo 19 (zod/react-hook-form) e ligar as páginas (Clientes, Trabalhos, etc.) aos dados reais em vez de exemplos fixos (Passo 32+).
 
 **Nota de estrutura:** o código do Next.js vive diretamente na raiz do repositório (não numa subpasta `app/`). Os documentos de planeamento (`DOCUMENTACAO.md`, `PASSO-A-PASSO.md`, `COMANDOS.md`, `interface-referencia.html`) estão organizados dentro de `docs/`. Todos os comandos (`pnpm dev`, `pnpm add`, etc.) correm a partir da raiz do projeto.
 
@@ -64,8 +64,8 @@
 - [x] **Passo 27.** Criar layout principal com **sidebar** (Workspace / Gestão / Comunicação / Sistema) e área de conteúdo — feito com os componentes `Sidebar*` do shadcn/ui. Dashboard com dados de exemplo, mais páginas base de Trabalhos/Clientes/Orçamentos. Falta ainda ligar autenticação (isso é o Passo 17-18, com Clerk).
 - [x] **Passo 28.** Implementar sidebar recolhível (modo só-ícones) — já incluído de fábrica no componente `Sidebar` do shadcn (`collapsible="icon"`).
 - [x] **Passo 29.** Criar bloco de utilizador no fundo da sidebar (avatar, nome, dropdown Perfil/Preferências/Alterar workspace/Ajuda/Sair) — falta só ligar as ações reais ao Clerk quando fizermos essa parte.
-- [ ] **Passo 30.** Criar fluxo de "primeiro acesso": após registo, obrigar a criar um Workspace antes de entrar no dashboard.
-- [ ] **Passo 31.** Implementar isolamento multi-tenant: toda a query à BD filtrada por `workspace_id` (middleware/helper central, nunca query solta).
+- [x] **Passo 30.** Criar fluxo de "primeiro acesso": ativámos "Membership required" nas Organizações do Clerk (é o valor por defeito) — o próprio Clerk força escolher/criar uma Organização (Workspace) logo a seguir ao registo, antes de conseguir entrar. **Falta confirmar em teste real** (fazer sign-up na app).
+- [x] **Passo 31.** Implementar isolamento multi-tenant: `src/lib/workspace.ts` → `getCurrentWorkspace()` é o helper central. Lê o `orgId` ativo do Clerk, sincroniza (cria se não existir) as linhas correspondentes em `users`/`workspaces`/`workspace_members`, e devolve o workspace — todas as queries futuras a dados do negócio devem usar o `workspace.id` daqui. Sincronização feita "on demand" por agora; migrar para webhooks do Clerk mais tarde é uma melhoria futura (não bloqueia o progresso atual).
 
 ### 2.3 Clientes
 
