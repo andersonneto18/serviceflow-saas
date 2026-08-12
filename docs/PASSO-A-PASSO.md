@@ -41,8 +41,8 @@
 - [ ] **Passo 14.** Instalar Drizzle ORM (`drizzle-orm`, `drizzle-kit`) e o driver Postgres (`@neondatabase/serverless` ou `pg`).
 - [ ] **Passo 15.** Criar `drizzle.config.ts` a apontar para a base de dados Neon.
 - [ ] **Passo 16.** Criar a pasta `db/schema` e o ficheiro de conexão à base de dados (`db/index.ts`).
-- [ ] **Passo 17.** Instalar Clerk (`@clerk/nextjs`) e configurar o `middleware.ts` de proteção de rotas.
-- [ ] **Passo 18.** Envolver a app no `<ClerkProvider>` e testar login/registo básico (páginas default do Clerk).
+- [x] **Passo 17.** Instalar Clerk (`@clerk/nextjs`) e configurar o `src/proxy.ts` (substitui o `middleware.ts` no Next.js 16) de proteção de rotas — feito via Clerk CLI, tipo de projeto **B2B** com Organizações ativas (mapeiam para os nossos Workspaces), Email + Google como métodos de login.
+- [x] **Passo 18.** Envolver a app no `<ClerkProvider>` (com tema shadcn via `@clerk/ui`), páginas `/sign-in` e `/sign-up` criadas, grupo `(app)` protegido (redireciona para `/sign-in` se não autenticado) — confirmado a funcionar. Sidebar já mostra o utilizador real (nome/email/avatar) em vez de dados fixos. **Falta:** criar a sua primeira conta de teste (fazer sign-up na app) para confirmarmos o fluxo ponta a ponta.
 - [ ] **Passo 19.** Instalar `zod` e `react-hook-form` (`@hookform/resolvers`).
 - [ ] **Passo 20.** Fazer o primeiro commit git (`fundação do projeto`).
 
