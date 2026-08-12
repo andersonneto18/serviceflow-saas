@@ -10,7 +10,7 @@
 - Base de dados: Neon (Postgres serverless na cloud)
 - Package manager: pnpm
 
-**Estado atual:** Fase 1 concluída (Passos 1-13); Fase 2 com o layout arrancado (Passos 27-29 feitos, com dados de exemplo). Base de dados Neon já criada e ligada (`.env.local`), mas ainda sem schema/tabelas (Passos 21-26 por fazer). Próximo passo em falta antes de continuar: Passo 5 (conta Clerk) para ligar autenticação a sério, ou avançar para o schema da base de dados (Passo 21+).
+**Estado atual:** Fase 1 concluída (Passos 1-18: fundação, shadcn/ui, Neon, Clerk, Drizzle). Fase 2: layout com sidebar/dashboard feito (Passos 27-29, com dados de exemplo) e schema completo da base de dados aplicado ao Neon (Passos 21-26, 13 tabelas). Falta: Passo 19 (zod/react-hook-form), Passo 30-31 (fluxo de criação de workspace + isolamento multi-tenant nas queries), e depois ligar as páginas (Clientes, Trabalhos, etc.) aos dados reais em vez de exemplos fixos (Passo 32+).
 
 **Nota de estrutura:** o código do Next.js vive diretamente na raiz do repositório (não numa subpasta `app/`). Os documentos de planeamento (`DOCUMENTACAO.md`, `PASSO-A-PASSO.md`, `COMANDOS.md`, `interface-referencia.html`) estão organizados dentro de `docs/`. Todos os comandos (`pnpm dev`, `pnpm add`, etc.) correm a partir da raiz do projeto.
 
@@ -52,12 +52,12 @@
 
 ### 2.1 Modelo de dados base
 
-- [ ] **Passo 21.** Definir schema Drizzle: `users`, `workspaces`, `workspace_members` (ligação users↔workspaces com role).
-- [ ] **Passo 22.** Definir schema Drizzle: `clients`, `client_addresses`.
-- [ ] **Passo 23.** Definir schema Drizzle: `services`, `products`.
-- [ ] **Passo 24.** Definir schema Drizzle: `jobs`, `job_tasks`, `job_notes`, `job_photos`.
-- [ ] **Passo 25.** Definir schema Drizzle: `quotes`, `quote_items`.
-- [ ] **Passo 26.** Correr a primeira migração (`drizzle-kit generate` + `drizzle-kit migrate`) e confirmar tabelas criadas no Neon.
+- [x] **Passo 21.** Definir schema Drizzle: `users`, `workspaces`, `workspace_members` (ligação users↔workspaces com role — enum `administrador/gestor/profissional/visualizacao`).
+- [x] **Passo 22.** Definir schema Drizzle: `clients`, `client_addresses`.
+- [x] **Passo 23.** Definir schema Drizzle: `services`, `products`.
+- [x] **Passo 24.** Definir schema Drizzle: `jobs`, `job_tasks`, `job_notes`, `job_photos`.
+- [x] **Passo 25.** Definir schema Drizzle: `quotes`, `quote_items`.
+- [x] **Passo 26.** Correr a primeira migração (`drizzle-kit generate` + `drizzle-kit migrate`) — 13 tabelas confirmadas na base de dados Neon (consulta direta a `information_schema.tables`).
 
 ### 2.2 Layout e navegação
 
