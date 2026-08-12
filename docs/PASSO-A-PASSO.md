@@ -10,7 +10,7 @@
 - Base de dados: Neon (Postgres serverless na cloud)
 - Package manager: pnpm
 
-**Estado atual:** Fase 1 em curso. Concluídos: Passo 1 (pnpm), Passo 3 (git init na raiz + `.gitignore` + repositório ligado e enviado para [github.com/andersonneto18/appglobal](https://github.com/andersonneto18/appglobal)), Passo 8 (projeto Next.js criado — inicialmente numa subpasta `app/`, depois achatado para a raiz do repositório), Passo 9 (servidor de dev confirmado a correr em `http://localhost:3000` a partir da raiz). Próximo: Passo 4 (conta Neon) e Passo 5 (conta Clerk).
+**Estado atual:** Fase 1 concluída (Passos 1-13); Fase 2 com o layout arrancado (Passos 27-29 feitos, com dados de exemplo). Base de dados Neon já criada e ligada (`.env.local`), mas ainda sem schema/tabelas (Passos 21-26 por fazer). Próximo passo em falta antes de continuar: Passo 5 (conta Clerk) para ligar autenticação a sério, ou avançar para o schema da base de dados (Passo 21+).
 
 **Nota de estrutura:** o código do Next.js vive diretamente na raiz do repositório (não numa subpasta `app/`). Os documentos de planeamento (`DOCUMENTACAO.md`, `PASSO-A-PASSO.md`, `COMANDOS.md`, `interface-referencia.html`) estão organizados dentro de `docs/`. Todos os comandos (`pnpm dev`, `pnpm add`, etc.) correm a partir da raiz do projeto.
 
@@ -61,9 +61,9 @@
 
 ### 2.2 Layout e navegação
 
-- [ ] **Passo 27.** Criar layout principal autenticado com **sidebar** (Workspace / Gestão / Comunicação / Sistema, conforme secção 3 da documentação) e área de conteúdo.
-- [ ] **Passo 28.** Implementar sidebar recolhível (modo só-ícones).
-- [ ] **Passo 29.** Criar bloco de utilizador no fundo da sidebar (avatar, nome, dropdown Perfil/Preferências/Alterar workspace/Ajuda/Sair via Clerk).
+- [x] **Passo 27.** Criar layout principal com **sidebar** (Workspace / Gestão / Comunicação / Sistema) e área de conteúdo — feito com os componentes `Sidebar*` do shadcn/ui. Dashboard com dados de exemplo, mais páginas base de Trabalhos/Clientes/Orçamentos. Falta ainda ligar autenticação (isso é o Passo 17-18, com Clerk).
+- [x] **Passo 28.** Implementar sidebar recolhível (modo só-ícones) — já incluído de fábrica no componente `Sidebar` do shadcn (`collapsible="icon"`).
+- [x] **Passo 29.** Criar bloco de utilizador no fundo da sidebar (avatar, nome, dropdown Perfil/Preferências/Alterar workspace/Ajuda/Sair) — falta só ligar as ações reais ao Clerk quando fizermos essa parte.
 - [ ] **Passo 30.** Criar fluxo de "primeiro acesso": após registo, obrigar a criar um Workspace antes de entrar no dashboard.
 - [ ] **Passo 31.** Implementar isolamento multi-tenant: toda a query à BD filtrada por `workspace_id` (middleware/helper central, nunca query solta).
 
