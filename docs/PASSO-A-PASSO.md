@@ -38,9 +38,9 @@
 - [x] **Passo 11.** Instalar e configurar `shadcn/ui` (`pnpm dlx shadcn@latest init`) — preset "base-nova", cor de destaque azul definida em `globals.css`.
 - [x] **Passo 12.** Adicionar os primeiros componentes shadcn (`avatar`, `badge`, `card`, `table`, `input`, `separator`, `sheet`, `dropdown-menu`, `tabs`, `command`, `sidebar`, `tooltip`, `button`).
 - [x] **Passo 13.** Criar ficheiro `.env.local` com as variáveis de ambiente (Neon `DATABASE_URL`) — já protegido pelo `.gitignore` (`.env*`). Chaves Clerk entram quando fizermos o Passo 5.
-- [ ] **Passo 14.** Instalar Drizzle ORM (`drizzle-orm`, `drizzle-kit`) e o driver Postgres (`@neondatabase/serverless` ou `pg`).
-- [ ] **Passo 15.** Criar `drizzle.config.ts` a apontar para a base de dados Neon.
-- [ ] **Passo 16.** Criar a pasta `db/schema` e o ficheiro de conexão à base de dados (`db/index.ts`).
+- [x] **Passo 14.** Instalar Drizzle ORM (`drizzle-orm`, `drizzle-kit`) e o driver Postgres (`@neondatabase/serverless`, driver HTTP — bom para ambientes serverless/edge como o Vercel).
+- [x] **Passo 15.** Criar `drizzle.config.ts` a apontar para a base de dados Neon — testado com `drizzle-kit generate`, liga corretamente.
+- [x] **Passo 16.** Criar a pasta `src/db/schema` e o ficheiro de conexão à base de dados (`src/db/index.ts`) — schema ainda vazio, tabelas entram no Passo 21+.
 - [x] **Passo 17.** Instalar Clerk (`@clerk/nextjs`) e configurar o `src/proxy.ts` (substitui o `middleware.ts` no Next.js 16) de proteção de rotas — feito via Clerk CLI, tipo de projeto **B2B** com Organizações ativas (mapeiam para os nossos Workspaces), Email + Google como métodos de login.
 - [x] **Passo 18.** Envolver a app no `<ClerkProvider>` (com tema shadcn via `@clerk/ui`), páginas `/sign-in` e `/sign-up` criadas, grupo `(app)` protegido (redireciona para `/sign-in` se não autenticado) — confirmado a funcionar. Sidebar já mostra o utilizador real (nome/email/avatar) em vez de dados fixos. **Falta:** criar a sua primeira conta de teste (fazer sign-up na app) para confirmarmos o fluxo ponta a ponta.
 - [ ] **Passo 19.** Instalar `zod` e `react-hook-form` (`@hookform/resolvers`).
