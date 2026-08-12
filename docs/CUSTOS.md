@@ -6,6 +6,20 @@
 
 ---
 
+## 💰 Preço total — resposta direta
+
+| Fase | Custo fixo/mês | Custo fixo/ano | + Stripe (variável) |
+|---|---|---|---|
+| **Agora (a desenvolver)** | **€0** | **€0** | — (ninguém paga ainda) |
+| **No dia em que lançar a sério** | **~€20-22/mês** (só Vercel Pro) | **~€260/ano** (+ ~€15 do domínio) | ~1,5% + €0,25 por venda |
+| **Com centenas de clientes ativos** | **~€100-150/mês** | **~€1.200-1.800/ano** | ~1,5% + €0,25 por venda |
+
+**A conta simples:** o único dinheiro que sai do seu bolso de forma fixa e garantida é o **Vercel Pro (~€19/mês) + o domínio (~€1,25/mês, pago 1x/ano)** — no total, **cerca de €20/mês (~€250/ano)** para ter a app online a sério com uso comercial. Tudo o resto (base de dados, login, emails, ficheiros) fica dentro do nível grátis até termos um volume de utilizadores considerável. O Stripe nunca é um custo "parado" — só desconta uma pequena percentagem de cada venda real, por isso cresce junto com a receita, nunca à frente dela.
+
+**Ou seja: pode desenvolver tudo sem gastar nada, e o primeiro euro a sério só sai quando decidir publicar a app para o mundo.**
+
+---
+
 ## Tabela geral
 
 | Serviço | Para quê | Nível grátis | Quando começa a pagar | Custo típico |
