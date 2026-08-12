@@ -130,7 +130,7 @@ function NavGroup({
   );
 }
 
-export function AppSidebar() {
+export function AppSidebar({ workspaceName }: { workspaceName?: string }) {
   const pathname = usePathname();
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
@@ -151,7 +151,7 @@ export function AppSidebar() {
             S
           </div>
           <span className="truncate text-sm font-semibold tracking-tight group-data-[collapsible=icon]:hidden">
-            Serviza
+            {workspaceName ?? "Serviza"}
           </span>
         </div>
       </SidebarHeader>

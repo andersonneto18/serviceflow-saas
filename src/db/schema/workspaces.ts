@@ -3,6 +3,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -28,14 +29,24 @@ export const workspaceMemberRole = pgEnum("workspace_member_role", [
 
 // Tabela de ligação: qual utilizador pertence a qual workspace, com que cargo.
 // Um utilizador pode aparecer várias vezes aqui — uma linha por workspace a que pertence.
-export const workspaceMembers = pgTable("workspace_members", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  workspaceId: uuid("workspace_id")
-    .notNull()
-    .references(() => workspaces.id, { onDelete: "cascade" }),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  role: workspaceMemberRole("role").notNull().default("profissional"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-});
+export const workspaceMembers = pgTable(
+  "workspace_members",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    role: workspaceMemberRole("role").notNull().default("profissional"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    // Nunca o mesmo utilizador duas vezes no mesmo workspace.
+    uniqueIndex("workspace_members_workspace_user_idx").on(
+      table.workspaceId,
+      table.userId
+    ),
+  ]
+);

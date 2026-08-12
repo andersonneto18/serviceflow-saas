@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
+import { getCurrentWorkspace } from "@/lib/workspace";
 import { AppSidebar } from "@/components/app-sidebar";
 import { CommandMenu } from "@/components/command-menu";
 import { Button } from "@/components/ui/button";
@@ -29,9 +30,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     redirect("/sign-in");
   }
 
+  const workspace = await getCurrentWorkspace();
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar workspaceName={workspace?.name} />
       <SidebarInset>
         <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b px-4">
           <div className="flex items-center gap-2">
