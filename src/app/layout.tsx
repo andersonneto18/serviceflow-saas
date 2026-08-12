@@ -1,7 +1,10 @@
+import { ClerkProvider } from "@clerk/nextjs";
+import { shadcn } from "@clerk/ui/themes";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
+import "@clerk/ui/themes/shadcn.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +28,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
+        <ClerkProvider appearance={{ theme: shadcn }}>
+          <TooltipProvider delay={200}>{children}</TooltipProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

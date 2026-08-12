@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useClerk, useUser } from "@clerk/nextjs";
 import {
   LayoutGrid,
   Inbox,
@@ -38,7 +39,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -131,6 +132,16 @@ function NavGroup({
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
+
+  const displayName = isLoaded
+    ? user?.fullName || user?.primaryEmailAddress?.emailAddress || "Utilizador"
+    : "A carregar…";
+  const initials = isLoaded
+    ? (user?.firstName?.[0] ?? "") + (user?.lastName?.[0] ?? "") ||
+      displayName.slice(0, 2).toUpperCase()
+    : "…";
 
   return (
     <Sidebar collapsible="icon">
@@ -160,14 +171,15 @@ export function AppSidebar() {
         <DropdownMenu>
           <DropdownMenuTrigger render={<SidebarMenuButton size="lg" />}>
             <Avatar className="h-7 w-7 rounded-full">
+              <AvatarImage src={user?.imageUrl} alt={displayName} />
               <AvatarFallback className="rounded-full bg-primary text-xs text-primary-foreground">
-                AN
+                {initials}
               </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">Anderson Neto</span>
+              <span className="truncate font-medium">{displayName}</span>
               <span className="truncate text-xs text-muted-foreground">
-                Administrador
+                {user?.primaryEmailAddress?.emailAddress ?? ""}
               </span>
             </div>
             <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
@@ -178,7 +190,9 @@ export function AppSidebar() {
             <DropdownMenuItem>Alterar workspace</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Ajuda</DropdownMenuItem>
-            <DropdownMenuItem>Sair</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut({ redirectUrl: "/sign-in" })}>
+              Sair
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarFooter>
