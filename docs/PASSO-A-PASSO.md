@@ -77,6 +77,7 @@
 
 - [x] **Passo 35.** Página de catálogo de Serviços (listagem) — dados reais, item ativado na sidebar.
 - [x] **Passo 36.** Formulário de criar serviço (nome, descrição, preço, tipo de preço, duração, categoria). Editar ainda não foi feito.
+- [x] **Passo 36a** *(não estava numerado, adicionado por pedido)*. Página de **Produtos & Materiais** — mesmo padrão (nome, unidade, preço), tabela `products` do schema, item ativado na sidebar.
 
 ### 2.5 Trabalhos
 
