@@ -95,11 +95,11 @@
 
 ### 2.7 Orçamentos
 
-- [ ] **Passo 45.** Schema Drizzle já criado no Passo 25 — criar o builder de orçamento (adicionar serviço/quantidade/preço/materiais/desconto/impostos, cálculo de subtotal/IVA/total).
-- [ ] **Passo 46.** Botão "Guardar rascunho".
-- [ ] **Passo 47.** Botão "Enviar ao cliente" — gerar link público de visualização do orçamento (rota sem autenticação Clerk, com token).
-- [ ] **Passo 48.** Página pública do orçamento com ações Aceitar / Rejeitar / Pedir alteração.
-- [ ] **Passo 49.** Automação: orçamento aceite → criar Trabalho automaticamente (Server Action).
+- [x] **Passo 45.** Builder de orçamento em `/orcamentos/novo` — itens dinâmicos (adicionar/remover linhas com `useFieldArray`), desconto e IVA configuráveis, subtotal/total calculados ao vivo no browser.
+- [x] **Passo 46.** Botão "Guardar rascunho" — grava com `status: rascunho`.
+- [x] **Passo 47.** Botão "Enviar ao cliente" — grava `status: enviado` + `sentAt`, gera `publicToken` (UUID), link público em `/orcamento/[token]` (fora do grupo `(app)`, por isso sem exigir login). Botão "Copiar link" na listagem.
+- [x] **Passo 48.** Página pública do orçamento — mostra itens/totais, botões Aceitar/Rejeitar. **Falta:** "Pedir alteração" (só tem Aceitar/Rejeitar por agora).
+- [x] **Passo 49.** Automação: ao aceitar, cria um Trabalho automaticamente (`status: agendado`, valor = total do orçamento) e liga `quotes.jobId` a ele — tudo numa Server Action pública (`src/app/orcamento/[token]/actions.ts`).
 
 ### 2.8 Agenda
 
