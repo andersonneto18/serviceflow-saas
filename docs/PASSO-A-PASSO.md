@@ -81,11 +81,11 @@
 
 ### 2.5 Trabalhos
 
-- [ ] **Passo 37.** Página de listagem de Trabalhos (tabela: Cliente/Serviço/Responsável/Data/Estado/Valor).
-- [ ] **Passo 38.** Formulário de criar trabalho (ligado a cliente + serviço).
+- [x] **Passo 37.** Página de listagem de Trabalhos (tabela: Cliente/Trabalho/Serviço/Data/Estado/Valor) — dados reais, com join a Clientes e Serviços. Coluna "Responsável" fica para quando tivermos Equipa (Passo 66+).
+- [x] **Passo 38.** Formulário de criar trabalho, ligado a cliente (obrigatório) + serviço (opcional), com data/hora, localização, valor e estado.
 - [ ] **Passo 39.** Página de detalhe do trabalho: Informações, Tarefas (checklist), Materiais, Notas.
 - [ ] **Passo 40.** Timeline visual do trabalho (Criado → Orçamento aprovado → Agendado → Em execução → Concluído → Pago).
-- [ ] **Passo 41.** Gestão de estados do trabalho (Rascunho/Agendado/Em execução/Em pausa/Concluído/Cancelado).
+- [x] **Passo 41.** Gestão de estados do trabalho — os 6 estados já estão no formulário e na tabela (com cor própria por estado); falta poder mudar o estado depois de criado (só no Passo 39, na página de detalhe).
 
 ### 2.6 Tarefas
 
