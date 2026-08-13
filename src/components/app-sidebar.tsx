@@ -18,7 +18,6 @@ import {
   Route as RouteIcon,
   BarChart3,
   Zap,
-  MessageCircle,
   Globe,
   Bell,
   Plug,
@@ -77,7 +76,6 @@ const gestaoNav: NavItem[] = [
 ];
 
 const comunicacaoNav: NavItem[] = [
-  { title: "Mensagens", url: "#", icon: MessageCircle, disabled: true },
   { title: "Portal do cliente", url: "#", icon: Globe, disabled: true },
   { title: "Notificações", url: "#", icon: Bell, disabled: true },
 ];
