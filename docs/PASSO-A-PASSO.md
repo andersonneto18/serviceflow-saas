@@ -85,7 +85,7 @@
 - [x] **Passo 38.** Formulário de criar trabalho, ligado a cliente (obrigatório) + serviço (opcional), com data/hora, localização, valor e estado.
 - [ ] **Passo 39.** Página de detalhe do trabalho: Informações, Tarefas (checklist), Materiais, Notas.
 - [ ] **Passo 40.** Timeline visual do trabalho (Criado → Orçamento aprovado → Agendado → Em execução → Concluído → Pago).
-- [x] **Passo 41.** Gestão de estados do trabalho — os 6 estados já estão no formulário e na tabela (com cor própria por estado); falta poder mudar o estado depois de criado (só no Passo 39, na página de detalhe).
+- [x] **Passo 41.** Gestão de estados do trabalho — completo: os 6 estados no formulário, e agora também um seletor direto na tabela para mudar o estado de um trabalho já criado (dispara a automação de faturação ao marcar "Concluído").
 
 ### 2.6 Tarefas
 
@@ -130,14 +130,14 @@
 
 ## Fase 4 — Equipas, automação e operação
 
-- [ ] **Passo 65.** Schema Drizzle para permissões de `workspace_members` (Administrador/Gestor/Profissional/Visualização).
-- [ ] **Passo 66.** Página de gestão de Equipa (listar, convidar, remover membros).
-- [ ] **Passo 67.** Atribuição de trabalhos/tarefas a membros da equipa.
+- [x] **Passo 65.** Permissões já vinham do Passo 21 (`workspace_members.role`). Convites/cargos reais usam antes os cargos nativos do Clerk (`org:admin`/`org:member`) — mais simples que replicar os 4 cargos no Clerk também.
+- [x] **Passo 66.** Página de gestão de Equipa (`/equipas`) — lista membros e convites pendentes **direto do Clerk** (não da nossa BD, que só sincroniza no primeiro login de cada pessoa), com diálogo "Convidar membro" (só visível para admins). Remover membro ainda não foi feito.
+- [ ] **Passo 67.** Atribuição de trabalhos/tarefas a membros da equipa — ainda por fazer (os campos `assignedToUserId` já existem em `jobs`/`tasks`, falta a UI).
 - [ ] **Passo 68.** Schema Drizzle para `notifications` + sino de notificações no topo da app.
 - [ ] **Passo 69.** Disparar notificações nos eventos-chave (novo cliente, orçamento aceite, pagamento recebido/atrasado, trabalho próximo, nova mensagem, tarefa atribuída).
 - [x] **Passo 70.** Schema Drizzle para `messages` + página **Inbox** centralizada — feito fora de ordem, a pedido. Lista mensagens ligadas a clientes (`senderType`: cliente/equipa/sistema) com diálogo "Nova mensagem". Mensagens do tipo "cliente" só vão existir a sério quando o Portal do Cliente (Passo 64) estiver feito; por agora só se envia como "equipa".
-- [ ] **Passo 71.** Motor de **Automação** simples (regras Quando/Então/E), começando pelos dois exemplos da documentação (orçamento aprovado → criar trabalho + notificar; trabalho concluído → enviar fatura + pedir avaliação).
-- [ ] **Passo 72.** Página de Relatórios básicos (receita, trabalhos concluídos, clientes novos por período).
+- [x] **Passo 71.** **Automação** (`/automacao`) — as duas regras da documentação, cada uma com interruptor ligado/desligado (tabela `automations`, por defeito ativas). Ligadas a gatilhos reais: orçamento aceite → cria trabalho (em `orcamento/[token]/actions.ts`); trabalho marcado como concluído → cria fatura automaticamente (em `trabalhos/actions.ts`, novo `updateJobStatus`). **Simplificação:** não é um motor genérico de regras — as ações estão fixas no código, só o ligado/desligado é configurável. "Notificar"/"pedir avaliação" não estão implementados (sem sistema de notificações nem emails ainda).
+- [x] **Passo 72.** Página de Relatórios (`/relatorios`) — receita total (faturas pagas), trabalhos concluídos este mês, clientes novos este mês, taxa de orçamentos aceites. Só agregações sobre tabelas existentes, sem schema novo.
 - [ ] **Passo 73.** Pesquisa global (Ctrl K / ⌘K) sobre clientes/trabalhos/tarefas/orçamentos/faturas/serviços.
 
 ---
