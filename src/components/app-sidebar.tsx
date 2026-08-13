@@ -15,11 +15,9 @@ import {
   CreditCard,
   Tag,
   Package,
-  Route as RouteIcon,
   BarChart3,
   Zap,
   Globe,
-  Bell,
   Plug,
   Settings,
   ChevronsUpDown,
@@ -70,14 +68,12 @@ const gestaoNav: NavItem[] = [
   { title: "Serviços", url: "/servicos", icon: Tag },
   { title: "Produtos & Materiais", url: "/produtos", icon: Package },
   { title: "Equipas", url: "#", icon: Users, disabled: true },
-  { title: "Rotas", url: "#", icon: RouteIcon, disabled: true },
   { title: "Relatórios", url: "#", icon: BarChart3, disabled: true },
   { title: "Automação", url: "#", icon: Zap, disabled: true },
 ];
 
 const comunicacaoNav: NavItem[] = [
   { title: "Portal do cliente", url: "#", icon: Globe, disabled: true },
-  { title: "Notificações", url: "#", icon: Bell, disabled: true },
 ];
 
 const sistemaNav: NavItem[] = [
