@@ -15,6 +15,13 @@
       "when": 1786569949122,
       "tag": "0001_absent_eddie_brock",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786645513198,
+      "tag": "0002_big_scorpion",
+      "breakpoints": true
     }
   ]
 }

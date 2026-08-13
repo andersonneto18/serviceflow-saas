@@ -60,7 +60,7 @@ const workspaceNav: NavItem[] = [
   { title: "Inbox", url: "#", icon: Inbox, disabled: true },
   { title: "Calendário", url: "#", icon: Calendar, disabled: true },
   { title: "Trabalhos", url: "/trabalhos", icon: Briefcase },
-  { title: "Tarefas", url: "#", icon: CheckSquare, disabled: true },
+  { title: "Tarefas", url: "/tarefas", icon: CheckSquare },
   { title: "Clientes", url: "/clientes", icon: Users },
   { title: "Orçamentos", url: "/orcamentos", icon: FileText },
   { title: "Faturas", url: "#", icon: Receipt, disabled: true },
