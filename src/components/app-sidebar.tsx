@@ -58,7 +58,7 @@ type NavItem = {
 const workspaceNav: NavItem[] = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutGrid },
   { title: "Inbox", url: "/inbox", icon: Inbox },
-  { title: "Calendário", url: "#", icon: Calendar, disabled: true },
+  { title: "Calendário", url: "/calendario", icon: Calendar },
   { title: "Trabalhos", url: "/trabalhos", icon: Briefcase },
   { title: "Tarefas", url: "/tarefas", icon: CheckSquare },
   { title: "Clientes", url: "/clientes", icon: Users },
