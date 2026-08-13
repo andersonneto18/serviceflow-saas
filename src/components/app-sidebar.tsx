@@ -67,9 +67,9 @@ const workspaceNav: NavItem[] = [
 const gestaoNav: NavItem[] = [
   { title: "Serviços", url: "/servicos", icon: Tag },
   { title: "Produtos & Materiais", url: "/produtos", icon: Package },
-  { title: "Equipas", url: "#", icon: Users, disabled: true },
-  { title: "Relatórios", url: "#", icon: BarChart3, disabled: true },
-  { title: "Automação", url: "#", icon: Zap, disabled: true },
+  { title: "Equipas", url: "/equipas", icon: Users },
+  { title: "Relatórios", url: "/relatorios", icon: BarChart3 },
+  { title: "Automação", url: "/automacao", icon: Zap },
 ];
 
 const comunicacaoNav: NavItem[] = [

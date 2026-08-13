@@ -3,7 +3,6 @@ import { desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { clients, jobs, services } from "@/db/schema";
 import { getCurrentWorkspace } from "@/lib/workspace";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -13,25 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { JobStatusSelect } from "./job-status-select";
 import { NewJobDialog } from "./new-job-dialog";
-
-const STATUS_LABEL: Record<string, string> = {
-  rascunho: "Rascunho",
-  agendado: "Agendado",
-  em_execucao: "Em execução",
-  em_pausa: "Em pausa",
-  concluido: "Concluído",
-  cancelado: "Cancelado",
-};
-
-const STATUS_VARIANT: Record<string, string> = {
-  rascunho: "bg-muted text-muted-foreground",
-  agendado: "bg-primary/10 text-primary",
-  em_execucao: "bg-primary/10 text-primary",
-  em_pausa: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  concluido: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  cancelado: "bg-destructive/10 text-destructive",
-};
 
 export default async function TrabalhosPage() {
   const workspace = await getCurrentWorkspace();
@@ -121,12 +103,7 @@ export default async function TrabalhosPage() {
                       : "—"}
                   </TableCell>
                   <TableCell>
-                    <Badge
-                      variant="secondary"
-                      className={STATUS_VARIANT[job.status]}
-                    >
-                      {STATUS_LABEL[job.status]}
-                    </Badge>
+                    <JobStatusSelect jobId={job.id} status={job.status} />
                   </TableCell>
                   <TableCell className="text-right font-mono tabular-nums">
                     {job.value

@@ -36,6 +36,13 @@
       "when": 1786650094401,
       "tag": "0004_greedy_hulk",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786653763517,
+      "tag": "0005_kind_living_mummy",
+      "breakpoints": true
     }
   ]
 }

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
 import { jobs, quotes } from "@/db/schema";
+import { AUTOMATION_KEYS, isAutomationActive } from "@/lib/automations";
 
 export async function respondToQuote(
   token: string,
@@ -19,21 +20,31 @@ export async function respondToQuote(
   if (quote.status !== "enviado") return;
 
   if (decision === "aceite") {
-    // Automação (secção 7 da documentação): orçamento aprovado -> cria trabalho.
-    const [job] = await db
-      .insert(jobs)
-      .values({
-        workspaceId: quote.workspaceId,
-        clientId: quote.clientId,
-        title: "Trabalho criado a partir do orçamento",
-        status: "agendado",
-        value: quote.total,
-      })
-      .returning();
+    // Automação (secção 7/18 da documentação): orçamento aprovado -> cria
+    // trabalho. Configurável em /automacao — por defeito está ligada.
+    const shouldCreateJob = await isAutomationActive(
+      quote.workspaceId,
+      AUTOMATION_KEYS.QUOTE_ACCEPTED_CREATES_JOB
+    );
+
+    let jobId: string | null = null;
+    if (shouldCreateJob) {
+      const [job] = await db
+        .insert(jobs)
+        .values({
+          workspaceId: quote.workspaceId,
+          clientId: quote.clientId,
+          title: "Trabalho criado a partir do orçamento",
+          status: "agendado",
+          value: quote.total,
+        })
+        .returning();
+      jobId = job.id;
+    }
 
     await db
       .update(quotes)
-      .set({ status: "aceite", respondedAt: new Date(), jobId: job.id })
+      .set({ status: "aceite", respondedAt: new Date(), jobId })
       .where(eq(quotes.id, quote.id));
   } else {
     await db
