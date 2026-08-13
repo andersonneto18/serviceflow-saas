@@ -63,8 +63,8 @@ const workspaceNav: NavItem[] = [
   { title: "Tarefas", url: "/tarefas", icon: CheckSquare },
   { title: "Clientes", url: "/clientes", icon: Users },
   { title: "Orçamentos", url: "/orcamentos", icon: FileText },
-  { title: "Faturas", url: "#", icon: Receipt, disabled: true },
-  { title: "Pagamentos", url: "#", icon: CreditCard, disabled: true },
+  { title: "Faturas", url: "/faturas", icon: Receipt },
+  { title: "Pagamentos", url: "/pagamentos", icon: CreditCard },
 ];
 
 const gestaoNav: NavItem[] = [
