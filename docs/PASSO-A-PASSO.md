@@ -10,7 +10,7 @@
 - Base de dados: Neon (Postgres serverless na cloud)
 - Package manager: pnpm
 
-**Estado atual:** Fase 1 concluída. Fase 2: layout (27-29), schema (21-26), workspace multi-tenant (30-31, testado e confirmado a funcionar) e Clientes (19, 32-33) todos feitos, com dados reais. **App já em produção na Vercel**, ligada ao GitHub (`git push` publica automaticamente). Falta: página de detalhe do cliente (34), filtros (32), e depois Serviços (35-36) ou Trabalhos (37-41) — dashboard e trabalhos/orçamentos ainda mostram dados de exemplo fixos, por ligar.
+**Estado atual:** Fase 1 concluída. Fase 2: layout (27-29), schema (21-26), workspace multi-tenant (30-31), Clientes (19, 32-33) e Serviços (35-36) todos feitos, com dados reais e testados. **App já em produção na Vercel**, ligada ao GitHub (`git push` publica automaticamente). Falta: páginas de detalhe (34), filtros (32), e depois Trabalhos (37-41, já pode ligar-se a Clientes e Serviços reais) — dashboard e orçamentos ainda mostram dados de exemplo fixos, por ligar.
 
 **Nota de estrutura:** o código do Next.js vive diretamente na raiz do repositório (não numa subpasta `app/`). Os documentos de planeamento (`DOCUMENTACAO.md`, `PASSO-A-PASSO.md`, `COMANDOS.md`, `interface-referencia.html`) estão organizados dentro de `docs/`. Todos os comandos (`pnpm dev`, `pnpm add`, etc.) correm a partir da raiz do projeto.
 
@@ -75,8 +75,8 @@
 
 ### 2.4 Serviços
 
-- [ ] **Passo 35.** Página de catálogo de Serviços (listagem).
-- [ ] **Passo 36.** Formulário de criar/editar serviço (nome, descrição, preço, duração, categoria).
+- [x] **Passo 35.** Página de catálogo de Serviços (listagem) — dados reais, item ativado na sidebar.
+- [x] **Passo 36.** Formulário de criar serviço (nome, descrição, preço, tipo de preço, duração, categoria). Editar ainda não foi feito.
 
 ### 2.5 Trabalhos
 
