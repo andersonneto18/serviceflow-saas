@@ -103,7 +103,7 @@
 
 ### 2.8 Agenda
 
-- [ ] **Passo 50.** Página de Agenda com vistas Dia/Semana/Mês, listando trabalhos agendados.
+- [x] **Passo 50.** Página de Calendário — vista em lista, agrupada por dia ("Hoje"/"Amanhã"/data), com hora, cliente, localização e estado. Dados reais (`jobs.scheduledAt`), sem tabela nova. **Falta:** os toggles Dia/Semana/Mês em grelha (versão simplificada por agora).
 
 **Marco:** no fim da Fase 2, já existe um fluxo funcional completo: `Login → Workspace → Cliente → Serviço → Trabalho → Orçamento → Aceite → Trabalho agendado`.
 
