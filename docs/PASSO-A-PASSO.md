@@ -10,7 +10,7 @@
 - Base de dados: Neon (Postgres serverless na cloud)
 - Package manager: pnpm
 
-**Estado atual:** Fase 1 concluída (Passos 1-18). Fase 2: layout com sidebar/dashboard feito (Passos 27-29, com dados de exemplo), schema completo aplicado ao Neon (Passos 21-26, 13 tabelas), e sincronização Clerk↔BD pronta (Passos 30-31) — **falta testar com um sign-up real na app**. Depois disso: Passo 19 (zod/react-hook-form) e ligar as páginas (Clientes, Trabalhos, etc.) aos dados reais em vez de exemplos fixos (Passo 32+).
+**Estado atual:** Fase 1 concluída. Fase 2: layout (27-29), schema (21-26), workspace multi-tenant (30-31, testado e confirmado a funcionar) e Clientes (19, 32-33) todos feitos, com dados reais. **App já em produção na Vercel**, ligada ao GitHub (`git push` publica automaticamente). Falta: página de detalhe do cliente (34), filtros (32), e depois Serviços (35-36) ou Trabalhos (37-41) — dashboard e trabalhos/orçamentos ainda mostram dados de exemplo fixos, por ligar.
 
 **Nota de estrutura:** o código do Next.js vive diretamente na raiz do repositório (não numa subpasta `app/`). Os documentos de planeamento (`DOCUMENTACAO.md`, `PASSO-A-PASSO.md`, `COMANDOS.md`, `interface-referencia.html`) estão organizados dentro de `docs/`. Todos os comandos (`pnpm dev`, `pnpm add`, etc.) correm a partir da raiz do projeto.
 
@@ -43,7 +43,7 @@
 - [x] **Passo 16.** Criar a pasta `src/db/schema` e o ficheiro de conexão à base de dados (`src/db/index.ts`) — schema ainda vazio, tabelas entram no Passo 21+.
 - [x] **Passo 17.** Instalar Clerk (`@clerk/nextjs`) e configurar o `src/proxy.ts` (substitui o `middleware.ts` no Next.js 16) de proteção de rotas — feito via Clerk CLI, tipo de projeto **B2B** com Organizações ativas (mapeiam para os nossos Workspaces), Email + Google como métodos de login.
 - [x] **Passo 18.** Envolver a app no `<ClerkProvider>` (com tema shadcn via `@clerk/ui`), páginas `/sign-in` e `/sign-up` criadas, grupo `(app)` protegido (redireciona para `/sign-in` se não autenticado) — confirmado a funcionar. Sidebar já mostra o utilizador real (nome/email/avatar) em vez de dados fixos. **Falta:** criar a sua primeira conta de teste (fazer sign-up na app) para confirmarmos o fluxo ponta a ponta.
-- [ ] **Passo 19.** Instalar `zod` e `react-hook-form` (`@hookform/resolvers`).
+- [x] **Passo 19.** Instalar `zod` e `react-hook-form` (`@hookform/resolvers`).
 - [ ] **Passo 20.** Fazer o primeiro commit git (`fundação do projeto`).
 
 ---
@@ -69,8 +69,8 @@
 
 ### 2.3 Clientes
 
-- [ ] **Passo 32.** Página de listagem de Clientes (tabela com filtros Todos/Ativos/Potenciais/Inativos).
-- [ ] **Passo 33.** Formulário de criar/editar cliente (Zod + React Hook Form).
+- [x] **Passo 32.** Página de listagem de Clientes — dados reais da base de dados (filtrados por workspace), já sem exemplos fixos. **Falta:** os filtros Todos/Ativos/Potenciais/Inativos (fica para uma iteração seguinte).
+- [x] **Passo 33.** Formulário de criar cliente (Zod + React Hook Form, num diálogo) — grava via Server Action (`actions.ts`) diretamente na base de dados. Editar cliente ainda não foi feito.
 - [ ] **Passo 34.** Página de detalhe do cliente com separadores: Perfil, Histórico, Orçamentos, Notas (Faturas/Pagamentos/Documentos entram na Fase 3).
 
 ### 2.4 Serviços
