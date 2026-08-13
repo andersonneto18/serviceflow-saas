@@ -135,7 +135,7 @@
 - [ ] **Passo 67.** Atribuição de trabalhos/tarefas a membros da equipa.
 - [ ] **Passo 68.** Schema Drizzle para `notifications` + sino de notificações no topo da app.
 - [ ] **Passo 69.** Disparar notificações nos eventos-chave (novo cliente, orçamento aceite, pagamento recebido/atrasado, trabalho próximo, nova mensagem, tarefa atribuída).
-- [ ] **Passo 70.** Schema Drizzle para `messages` + página **Inbox** centralizada.
+- [x] **Passo 70.** Schema Drizzle para `messages` + página **Inbox** centralizada — feito fora de ordem, a pedido. Lista mensagens ligadas a clientes (`senderType`: cliente/equipa/sistema) com diálogo "Nova mensagem". Mensagens do tipo "cliente" só vão existir a sério quando o Portal do Cliente (Passo 64) estiver feito; por agora só se envia como "equipa".
 - [ ] **Passo 71.** Motor de **Automação** simples (regras Quando/Então/E), começando pelos dois exemplos da documentação (orçamento aprovado → criar trabalho + notificar; trabalho concluído → enviar fatura + pedir avaliação).
 - [ ] **Passo 72.** Página de Relatórios básicos (receita, trabalhos concluídos, clientes novos por período).
 - [ ] **Passo 73.** Pesquisa global (Ctrl K / ⌘K) sobre clientes/trabalhos/tarefas/orçamentos/faturas/serviços.
