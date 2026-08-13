@@ -89,9 +89,9 @@
 
 ### 2.6 Tarefas
 
-- [ ] **Passo 42.** Schema Drizzle para `tasks` (título, descrição, responsável, prioridade, prazo, cliente, trabalho relacionado, estado).
-- [ ] **Passo 43.** Vista em Lista de tarefas.
-- [ ] **Passo 44.** Vista em Kanban (To Do / In Progress / Done).
+- [x] **Passo 42.** Schema Drizzle para `tasks` (título, descrição, responsável, prioridade, prazo, cliente, trabalho relacionado, estado) — migrado para o Neon.
+- [x] **Passo 43.** Vista em Lista de tarefas — com checkbox para concluir (Server Action), badge de prioridade, cliente associado (opcional) e prazo. Item ativado na sidebar.
+- [ ] **Passo 44.** Vista em Kanban (To Do / In Progress / Done) — ainda por fazer.
 
 ### 2.7 Orçamentos
 
