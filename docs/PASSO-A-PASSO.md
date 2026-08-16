@@ -132,7 +132,7 @@
 
 - [x] **Passo 65.** Permissões já vinham do Passo 21 (`workspace_members.role`). Convites/cargos reais usam antes os cargos nativos do Clerk (`org:admin`/`org:member`) — mais simples que replicar os 4 cargos no Clerk também.
 - [x] **Passo 66.** Página de gestão de Equipa (`/equipas`) — lista membros e convites pendentes **direto do Clerk** (não da nossa BD, que só sincroniza no primeiro login de cada pessoa), com diálogo "Convidar membro" (só visível para admins). Remover membro ainda não foi feito.
-- [ ] **Passo 67.** Atribuição de trabalhos/tarefas a membros da equipa — ainda por fazer (os campos `assignedToUserId` já existem em `jobs`/`tasks`, falta a UI).
+- [x] **Passo 67.** Atribuição de trabalhos/tarefas a membros da equipa — seletor "Responsável" nos formulários de criar, mostrado na listagem e no detalhe do trabalho. `src/lib/team.ts` sincroniza automaticamente o utilizador atribuído para a nossa BD se ainda não tiver feito login (evita erro de referência estrangeira).
 - [ ] **Passo 68.** Schema Drizzle para `notifications` + sino de notificações no topo da app.
 - [ ] **Passo 69.** Disparar notificações nos eventos-chave (novo cliente, orçamento aceite, pagamento recebido/atrasado, trabalho próximo, nova mensagem, tarefa atribuída).
 - [x] **Passo 70.** Schema Drizzle para `messages` + página **Inbox** centralizada — feito fora de ordem, a pedido. Lista mensagens ligadas a clientes (`senderType`: cliente/equipa/sistema) com diálogo "Nova mensagem". Mensagens do tipo "cliente" só vão existir a sério quando o Portal do Cliente (Passo 64) estiver feito; por agora só se envia como "equipa".
