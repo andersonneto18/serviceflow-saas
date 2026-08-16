@@ -55,7 +55,7 @@
 - [x] **Passo 21.** Definir schema Drizzle: `users`, `workspaces`, `workspace_members` (ligação users↔workspaces com role — enum `administrador/gestor/profissional/visualizacao`).
 - [x] **Passo 22.** Definir schema Drizzle: `clients`, `client_addresses`.
 - [x] **Passo 23.** Definir schema Drizzle: `services`, `products`.
-- [x] **Passo 24.** Definir schema Drizzle: `jobs`, `job_tasks`, `job_notes`, `job_photos`.
+- [x] **Passo 24.** Definir schema Drizzle: `jobs`, `job_tasks`, `job_notes`, `job_photos` (+ `job_materials`, adicionada mais tarde para o separador "Materiais" do Passo 39).
 - [x] **Passo 25.** Definir schema Drizzle: `quotes`, `quote_items`.
 - [x] **Passo 26.** Correr a primeira migração (`drizzle-kit generate` + `drizzle-kit migrate`) — 13 tabelas confirmadas na base de dados Neon (consulta direta a `information_schema.tables`).
 
@@ -83,8 +83,8 @@
 
 - [x] **Passo 37.** Página de listagem de Trabalhos (tabela: Cliente/Trabalho/Serviço/Data/Estado/Valor) — dados reais, com join a Clientes e Serviços. Coluna "Responsável" fica para quando tivermos Equipa (Passo 66+).
 - [x] **Passo 38.** Formulário de criar trabalho, ligado a cliente (obrigatório) + serviço (opcional), com data/hora, localização, valor e estado.
-- [ ] **Passo 39.** Página de detalhe do trabalho: Informações, Tarefas (checklist), Materiais, Notas.
-- [ ] **Passo 40.** Timeline visual do trabalho (Criado → Orçamento aprovado → Agendado → Em execução → Concluído → Pago).
+- [x] **Passo 39.** Página de detalhe do trabalho (`/trabalhos/[id]`): Informações, Tarefas (checklist com adicionar/marcar feito), Materiais (adicionar + total), Notas (adicionar) — tudo a gravar de verdade.
+- [x] **Passo 40.** Timeline — versão simplificada: mostra Criado, Estado atual e Fatura (se existir/paga). **Não** é o histórico completo de todas as transições de estado (isso exigiria uma tabela de log que não criámos, para não complicar sem necessidade real).
 - [x] **Passo 41.** Gestão de estados do trabalho — completo: os 6 estados no formulário, e agora também um seletor direto na tabela para mudar o estado de um trabalho já criado (dispara a automação de faturação ao marcar "Concluído").
 
 ### 2.6 Tarefas
