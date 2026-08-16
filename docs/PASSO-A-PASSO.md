@@ -24,9 +24,9 @@
 - [x] **Passo 2.** Confirmar versões: `node -v` (v24.17.0), `pnpm -v` (11.21.0), `git --version` (2.54.0).
 - [x] **Passo 3.** Inicializar repositório git no diretório do projeto (`git init`).
 - [x] **Passo 4.** Criar conta e projeto novo no [Neon](https://neon.tech) (Postgres) e guardar a connection string — guardada em `.env.local` (`DATABASE_URL`).
-- [ ] **Passo 5.** Criar conta no [Clerk](https://clerk.com) e criar uma aplicação nova (guardar as chaves de API).
-- [ ] **Passo 6.** Criar conta no [Cloudflare](https://cloudflare.com) para o R2 (pode ser feito mais tarde, só é preciso na Fase 3).
-- [ ] **Passo 7.** Criar conta no [Vercel](https://vercel.com) ligada ao GitHub (para deploy, pode ser feito mais tarde).
+- [x] **Passo 5.** Criar conta no [Clerk](https://clerk.com) e criar uma aplicação nova (guardar as chaves de API).
+- [ ] **Passo 6.** Criar conta no [Cloudflare](https://cloudflare.com) para o R2 — ainda por fazer, só é preciso quando ligarmos upload de fotos/documentos.
+- [x] **Passo 7.** Criar conta no [Vercel](https://vercel.com) ligada ao GitHub — já em produção, deploy automático a cada `git push`.
 
 ---
 
@@ -44,7 +44,7 @@
 - [x] **Passo 17.** Instalar Clerk (`@clerk/nextjs`) e configurar o `src/proxy.ts` (substitui o `middleware.ts` no Next.js 16) de proteção de rotas — feito via Clerk CLI, tipo de projeto **B2B** com Organizações ativas (mapeiam para os nossos Workspaces), Email + Google como métodos de login.
 - [x] **Passo 18.** Envolver a app no `<ClerkProvider>` (com tema shadcn via `@clerk/ui`), páginas `/sign-in` e `/sign-up` criadas, grupo `(app)` protegido (redireciona para `/sign-in` se não autenticado) — confirmado a funcionar. Sidebar já mostra o utilizador real (nome/email/avatar) em vez de dados fixos. **Falta:** criar a sua primeira conta de teste (fazer sign-up na app) para confirmarmos o fluxo ponta a ponta.
 - [x] **Passo 19.** Instalar `zod` e `react-hook-form` (`@hookform/resolvers`).
-- [ ] **Passo 20.** Fazer o primeiro commit git (`fundação do projeto`).
+- [x] **Passo 20.** Fazer o primeiro commit git (`fundação do projeto`) — feito há muitas mensagens, já com dezenas de commits desde então.
 
 ---
 
