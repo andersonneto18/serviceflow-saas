@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 
 import {
+  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -13,25 +15,14 @@ import {
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
 
-const RESULTS = [
-  {
-    group: "Clientes",
-    title: "João Silva",
-    meta: "3 trabalhos · 2 orçamentos · 4 faturas",
-  },
-  { group: "Clientes", title: "Maria Costa", meta: "5 trabalhos · Lisboa" },
-  {
-    group: "Trabalhos",
-    title: "Instalação de 6 tomadas",
-    meta: "João Silva · Quarta-feira, 10:00",
-  },
-  { group: "Orçamentos", title: "Orçamento #1042", meta: "€285 · Aceite" },
-  { group: "Faturas", title: "Fatura #1042", meta: "€285 · Paga" },
-  { group: "Serviços", title: "Instalação elétrica", meta: "€80/h" },
-];
+import { searchWorkspace, type SearchResult } from "./search-actions";
 
 export function CommandMenu() {
   const [open, setOpen] = React.useState(false);
+  const [query, setQuery] = React.useState("");
+  const [results, setResults] = React.useState<SearchResult[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const router = useRouter();
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -44,7 +35,27 @@ export function CommandMenu() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  const groups = Array.from(new Set(RESULTS.map((r) => r.group)));
+  React.useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
+    setLoading(true);
+    const timeout = setTimeout(() => {
+      searchWorkspace(query)
+        .then(setResults)
+        .finally(() => setLoading(false));
+    }, 250);
+    return () => clearTimeout(timeout);
+  }, [query]);
+
+  const groups = Array.from(new Set(results.map((r) => r.group)));
+
+  function select(href: string) {
+    setOpen(false);
+    setQuery("");
+    router.push(href);
+  }
 
   return (
     <>
@@ -62,32 +73,54 @@ export function CommandMenu() {
       </Button>
       <CommandDialog
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={(next) => {
+          setOpen(next);
+          if (!next) setQuery("");
+        }}
         title="Pesquisa global"
         description="Pesquisar clientes, trabalhos, orçamentos, faturas e serviços"
       >
-        <CommandInput placeholder="Pesquisar clientes, trabalhos, orçamentos, faturas..." />
-        <CommandList>
-          <CommandEmpty>Sem resultados.</CommandEmpty>
-          {groups.map((group) => (
-            <CommandGroup key={group} heading={group}>
-              {RESULTS.filter((r) => r.group === group).map((item) => (
-                <CommandItem
-                  key={item.title}
-                  value={`${item.title} ${item.meta}`}
-                  onSelect={() => setOpen(false)}
-                >
-                  <div className="flex flex-col">
-                    <span>{item.title}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {item.meta}
-                    </span>
-                  </div>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          ))}
-        </CommandList>
+        <Command shouldFilter={false}>
+          <CommandInput
+            value={query}
+            onValueChange={setQuery}
+            placeholder="Pesquisar clientes, trabalhos, orçamentos, faturas..."
+          />
+          <CommandList>
+            {!loading && query.trim() && results.length === 0 && (
+              <CommandEmpty>
+                Sem resultados para &ldquo;{query}&rdquo;.
+              </CommandEmpty>
+            )}
+            {!query.trim() && (
+              <p className="p-6 text-center text-sm text-muted-foreground">
+                Comece a escrever para pesquisar.
+              </p>
+            )}
+            {groups.map((group) => (
+              <CommandGroup key={group} heading={group}>
+                {results
+                  .filter((r) => r.group === group)
+                  .map((item, index) => (
+                    <CommandItem
+                      key={`${item.group}-${index}`}
+                      value={`${item.group}-${index}`}
+                      onSelect={() => select(item.href)}
+                    >
+                      <div className="flex flex-col">
+                        <span>{item.title}</span>
+                        {item.meta && (
+                          <span className="text-xs text-muted-foreground">
+                            {item.meta}
+                          </span>
+                        )}
+                      </div>
+                    </CommandItem>
+                  ))}
+              </CommandGroup>
+            ))}
+          </CommandList>
+        </Command>
       </CommandDialog>
     </>
   );
