@@ -138,7 +138,7 @@
 - [x] **Passo 70.** Schema Drizzle para `messages` + página **Inbox** centralizada — feito fora de ordem, a pedido. Lista mensagens ligadas a clientes (`senderType`: cliente/equipa/sistema) com diálogo "Nova mensagem". Mensagens do tipo "cliente" só vão existir a sério quando o Portal do Cliente (Passo 64) estiver feito; por agora só se envia como "equipa".
 - [x] **Passo 71.** **Automação** (`/automacao`) — as duas regras da documentação, cada uma com interruptor ligado/desligado (tabela `automations`, por defeito ativas). Ligadas a gatilhos reais: orçamento aceite → cria trabalho (em `orcamento/[token]/actions.ts`); trabalho marcado como concluído → cria fatura automaticamente (em `trabalhos/actions.ts`, novo `updateJobStatus`). **Simplificação:** não é um motor genérico de regras — as ações estão fixas no código, só o ligado/desligado é configurável. "Notificar"/"pedir avaliação" não estão implementados (sem sistema de notificações nem emails ainda).
 - [x] **Passo 72.** Página de Relatórios (`/relatorios`) — receita total (faturas pagas), trabalhos concluídos este mês, clientes novos este mês, taxa de orçamentos aceites. Só agregações sobre tabelas existentes, sem schema novo.
-- [ ] **Passo 73.** Pesquisa global (Ctrl K / ⌘K) sobre clientes/trabalhos/tarefas/orçamentos/faturas/serviços.
+- [x] **Passo 73.** Pesquisa global (Ctrl K / ⌘K) — dados reais via Server Action (`src/components/search-actions.ts`), com debounce de 250ms. Cobre Clientes/Trabalhos/Serviços/Orçamentos/Faturas. **Falta:** Tarefas (não incluída ainda).
 
 ---
 
