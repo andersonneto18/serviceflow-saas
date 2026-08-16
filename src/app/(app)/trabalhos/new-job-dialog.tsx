@@ -40,9 +40,11 @@ const STATUS_LABEL: Record<JobFormValues["status"], string> = {
 export function NewJobDialog({
   clients,
   services,
+  members,
 }: {
   clients: { id: string; name: string }[];
   services: { id: string; name: string }[];
+  members: { id: string; name: string }[];
 }) {
   const [open, setOpen] = useState(false);
   const {
@@ -195,6 +197,29 @@ export function NewJobDialog({
               </Select>
             </div>
           </div>
+
+          {members.length > 0 && (
+            <div className="flex flex-col gap-1.5">
+              <Label>Responsável (opcional)</Label>
+              <Select
+                value={watch("assignedToUserId")}
+                onValueChange={(value) =>
+                  setValue("assignedToUserId", value ?? "")
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sem responsável atribuído" />
+                </SelectTrigger>
+                <SelectContent>
+                  {members.map((member) => (
+                    <SelectItem key={member.id} value={member.id}>
+                      {member.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <DialogFooter>
             <Button type="submit" disabled={isSubmitting}>

@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { invoiceItems, invoices, jobs } from "@/db/schema";
 import { AUTOMATION_KEYS, isAutomationActive } from "@/lib/automations";
+import { ensureUserSynced } from "@/lib/team";
 import { getCurrentWorkspace } from "@/lib/workspace";
 
 import { jobFormSchema, type JobFormValues } from "./schema";
@@ -18,10 +19,15 @@ export async function createJob(values: JobFormValues) {
     throw new Error("Sem workspace ativo.");
   }
 
+  if (parsed.assignedToUserId) {
+    await ensureUserSynced(parsed.assignedToUserId);
+  }
+
   await db.insert(jobs).values({
     workspaceId: workspace.id,
     clientId: parsed.clientId,
     serviceId: parsed.serviceId || null,
+    assignedToUserId: parsed.assignedToUserId || null,
     title: parsed.title,
     status: parsed.status,
     location: parsed.location || null,

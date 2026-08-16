@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
 import { tasks } from "@/db/schema";
+import { ensureUserSynced } from "@/lib/team";
 import { getCurrentWorkspace } from "@/lib/workspace";
 
 import { taskFormSchema, type TaskFormValues } from "./schema";
@@ -17,6 +18,10 @@ export async function createTask(values: TaskFormValues) {
     throw new Error("Sem workspace ativo.");
   }
 
+  if (parsed.assignedToUserId) {
+    await ensureUserSynced(parsed.assignedToUserId);
+  }
+
   await db.insert(tasks).values({
     workspaceId: workspace.id,
     title: parsed.title,
@@ -24,6 +29,7 @@ export async function createTask(values: TaskFormValues) {
     priority: parsed.priority,
     dueDate: parsed.dueDate ? new Date(parsed.dueDate) : null,
     clientId: parsed.clientId || null,
+    assignedToUserId: parsed.assignedToUserId || null,
   });
 
   revalidatePath("/tarefas");

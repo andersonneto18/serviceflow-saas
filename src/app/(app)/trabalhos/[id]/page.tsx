@@ -10,6 +10,7 @@ import {
   jobTasks,
   jobs,
   services,
+  users,
 } from "@/db/schema";
 import { getCurrentWorkspace } from "@/lib/workspace";
 import { Badge } from "@/components/ui/badge";
@@ -52,10 +53,12 @@ export default async function JobDetailPage({
       clientName: clients.name,
       clientPhone: clients.phone,
       serviceName: services.name,
+      assignedToName: users.name,
     })
     .from(jobs)
     .leftJoin(clients, eq(jobs.clientId, clients.id))
     .leftJoin(services, eq(jobs.serviceId, services.id))
+    .leftJoin(users, eq(jobs.assignedToUserId, users.id))
     .where(eq(jobs.id, id));
 
   if (!job) notFound();
@@ -103,6 +106,10 @@ export default async function JobDetailPage({
               <div>
                 <p className="text-xs font-medium text-muted-foreground">Serviço</p>
                 <p className="text-sm">{job.serviceName ?? "—"}</p>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">Responsável</p>
+                <p className="text-sm">{job.assignedToName ?? "—"}</p>
               </div>
               <div>
                 <p className="text-xs font-medium text-muted-foreground">Data</p>

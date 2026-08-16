@@ -4,6 +4,7 @@ export const jobFormSchema = z.object({
   title: z.string().min(1, "O título é obrigatório"),
   clientId: z.string().min(1, "Escolha um cliente"),
   serviceId: z.string().optional(),
+  assignedToUserId: z.string().optional(),
   status: z.enum([
     "rascunho",
     "agendado",

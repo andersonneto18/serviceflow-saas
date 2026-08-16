@@ -1,7 +1,8 @@
 import { asc, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { clients, tasks } from "@/db/schema";
+import { clients, tasks, users } from "@/db/schema";
+import { getWorkspaceMembers } from "@/lib/team";
 import { getCurrentWorkspace } from "@/lib/workspace";
 import { Badge } from "@/components/ui/badge";
 
@@ -25,7 +26,7 @@ const PRIORITY_VARIANT: Record<string, string> = {
 export default async function TarefasPage() {
   const workspace = await getCurrentWorkspace();
 
-  const [taskRows, clientRows] = workspace
+  const [taskRows, clientRows, memberRows] = workspace
     ? await Promise.all([
         db
           .select({
@@ -36,23 +37,26 @@ export default async function TarefasPage() {
             priority: tasks.priority,
             dueDate: tasks.dueDate,
             clientName: clients.name,
+            assignedToName: users.name,
           })
           .from(tasks)
           .leftJoin(clients, eq(tasks.clientId, clients.id))
+          .leftJoin(users, eq(tasks.assignedToUserId, users.id))
           .where(eq(tasks.workspaceId, workspace.id))
           .orderBy(asc(tasks.dueDate)),
         db
           .select({ id: clients.id, name: clients.name })
           .from(clients)
           .where(eq(clients.workspaceId, workspace.id)),
+        getWorkspaceMembers(),
       ])
-    : [[], []];
+    : [[], [], []];
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold tracking-tight">Tarefas</h1>
-        <NewTaskDialog clients={clientRows} />
+        <NewTaskDialog clients={clientRows} members={memberRows} />
       </div>
 
       {taskRows.length === 0 ? (
@@ -82,6 +86,7 @@ export default async function TarefasPage() {
                 </p>
                 <p className="truncate text-xs text-muted-foreground">
                   {task.clientName ?? "Sem cliente"}
+                  {task.assignedToName && ` · ${task.assignedToName}`}
                   {task.dueDate &&
                     ` · ${new Date(task.dueDate).toLocaleDateString("pt-PT")}`}
                 </p>

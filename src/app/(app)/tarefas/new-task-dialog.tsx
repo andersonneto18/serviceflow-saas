@@ -38,8 +38,10 @@ const PRIORITY_LABEL: Record<TaskFormValues["priority"], string> = {
 
 export function NewTaskDialog({
   clients,
+  members,
 }: {
   clients: { id: string; name: string }[];
+  members: { id: string; name: string }[];
 }) {
   const [open, setOpen] = useState(false);
   const {
@@ -140,6 +142,29 @@ export function NewTaskDialog({
                   {clients.map((client) => (
                     <SelectItem key={client.id} value={client.id}>
                       {client.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          {members.length > 0 && (
+            <div className="flex flex-col gap-1.5">
+              <Label>Responsável (opcional)</Label>
+              <Select
+                value={watch("assignedToUserId")}
+                onValueChange={(value) =>
+                  setValue("assignedToUserId", value ?? undefined)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sem responsável atribuído" />
+                </SelectTrigger>
+                <SelectContent>
+                  {members.map((member) => (
+                    <SelectItem key={member.id} value={member.id}>
+                      {member.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

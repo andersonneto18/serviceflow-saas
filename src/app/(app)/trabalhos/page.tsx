@@ -2,7 +2,8 @@ import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { clients, jobs, services } from "@/db/schema";
+import { clients, jobs, services, users } from "@/db/schema";
+import { getWorkspaceMembers } from "@/lib/team";
 import { getCurrentWorkspace } from "@/lib/workspace";
 import {
   Table,
@@ -19,7 +20,7 @@ import { NewJobDialog } from "./new-job-dialog";
 export default async function TrabalhosPage() {
   const workspace = await getCurrentWorkspace();
 
-  const [rows, clientRows, serviceRows] = workspace
+  const [rows, clientRows, serviceRows, memberRows] = workspace
     ? await Promise.all([
         db
           .select({
@@ -30,10 +31,12 @@ export default async function TrabalhosPage() {
             value: jobs.value,
             clientName: clients.name,
             serviceName: services.name,
+            assignedToName: users.name,
           })
           .from(jobs)
           .leftJoin(clients, eq(jobs.clientId, clients.id))
           .leftJoin(services, eq(jobs.serviceId, services.id))
+          .leftJoin(users, eq(jobs.assignedToUserId, users.id))
           .where(eq(jobs.workspaceId, workspace.id))
           .orderBy(desc(jobs.createdAt)),
         db
@@ -44,14 +47,19 @@ export default async function TrabalhosPage() {
           .select({ id: services.id, name: services.name })
           .from(services)
           .where(eq(services.workspaceId, workspace.id)),
+        getWorkspaceMembers(),
       ])
-    : [[], [], []];
+    : [[], [], [], []];
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold tracking-tight">Trabalhos</h1>
-        <NewJobDialog clients={clientRows} services={serviceRows} />
+        <NewJobDialog
+          clients={clientRows}
+          services={serviceRows}
+          members={memberRows}
+        />
       </div>
 
       {clientRows.length === 0 ? (
@@ -76,6 +84,7 @@ export default async function TrabalhosPage() {
                 <TableHead>Cliente</TableHead>
                 <TableHead>Trabalho</TableHead>
                 <TableHead>Serviço</TableHead>
+                <TableHead>Responsável</TableHead>
                 <TableHead>Data</TableHead>
                 <TableHead>Estado</TableHead>
                 <TableHead className="text-right">Valor</TableHead>
@@ -97,6 +106,9 @@ export default async function TrabalhosPage() {
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {job.serviceName ?? "—"}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {job.assignedToName ?? "—"}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {job.scheduledAt
