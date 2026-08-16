@@ -43,6 +43,13 @@
       "when": 1786653763517,
       "tag": "0005_kind_living_mummy",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786909552016,
+      "tag": "0006_luxuriant_kree",
+      "breakpoints": true
     }
   ]
 }

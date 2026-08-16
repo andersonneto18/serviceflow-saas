@@ -73,6 +73,22 @@ export const jobNotes = pgTable("job_notes", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+// Materiais usados neste trabalho especificamente (pode ou não vir do
+// catálogo de Produtos — por isso a descrição/preço ficam soltos aqui,
+// em vez de obrigar a escolher sempre um produto já existente).
+export const jobMaterials = pgTable("job_materials", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  jobId: uuid("job_id")
+    .notNull()
+    .references(() => jobs.id, { onDelete: "cascade" }),
+  description: text("description").notNull(),
+  quantity: numeric("quantity", { precision: 10, scale: 2 })
+    .notNull()
+    .default("1"),
+  unitPrice: numeric("unit_price", { precision: 10, scale: 2 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 // Só guardamos o link do ficheiro (Cloudflare R2) — nunca a foto em si
 // na base de dados (secção 5.5 da documentação).
 export const jobPhotos = pgTable("job_photos", {

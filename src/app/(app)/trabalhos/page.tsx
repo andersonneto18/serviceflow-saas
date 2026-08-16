@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
 
 import { db } from "@/db";
@@ -87,7 +88,12 @@ export default async function TrabalhosPage() {
                     {job.clientName ?? "—"}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    {job.title}
+                    <Link
+                      href={`/trabalhos/${job.id}`}
+                      className="hover:text-foreground hover:underline"
+                    >
+                      {job.title}
+                    </Link>
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {job.serviceName ?? "—"}
