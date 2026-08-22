@@ -104,6 +104,7 @@
 ### 2.8 Agenda
 
 - [x] **Passo 50.** Página de Calendário — vista em lista, agrupada por dia ("Hoje"/"Amanhã"/data), com hora, cliente, localização e estado. Dados reais (`jobs.scheduledAt`), sem tabela nova. **Falta:** os toggles Dia/Semana/Mês em grelha (versão simplificada por agora).
+- [x] **Passo 50a** *(não estava numerado, adicionado por pedido)*. Botão "Como chegar" (`src/components/map-link.tsx`) — abre o Google Maps já com a morada como destino, via *Maps URLs* (link público do Google, sem API paga nem conta). Presente no Calendário, no detalhe do Trabalho e nas moradas do Cliente. Substitui a necessidade da funcionalidade "Rotas" (que exigiria uma API de mapas paga) para o caso de uso mais comum: ir ter com o cliente.
 
 **Marco:** no fim da Fase 2, já existe um fluxo funcional completo: `Login → Workspace → Cliente → Serviço → Trabalho → Orçamento → Aceite → Trabalho agendado`.
 
