@@ -140,6 +140,7 @@
 - [x] **Passo 71.** **Automação** (`/automacao`) — as duas regras da documentação, cada uma com interruptor ligado/desligado (tabela `automations`, por defeito ativas). Ligadas a gatilhos reais: orçamento aceite → cria trabalho (em `orcamento/[token]/actions.ts`); trabalho marcado como concluído → cria fatura automaticamente (em `trabalhos/actions.ts`, novo `updateJobStatus`). **Simplificação:** não é um motor genérico de regras — as ações estão fixas no código, só o ligado/desligado é configurável. "Notificar"/"pedir avaliação" não estão implementados (sem sistema de notificações nem emails ainda).
 - [x] **Passo 72.** Página de Relatórios (`/relatorios`) — receita total (faturas pagas), trabalhos concluídos este mês, clientes novos este mês, taxa de orçamentos aceites. Só agregações sobre tabelas existentes, sem schema novo.
 - [x] **Passo 73.** Pesquisa global (Ctrl K / ⌘K) — dados reais via Server Action (`src/components/search-actions.ts`), com debounce de 250ms. Cobre Clientes/Trabalhos/Serviços/Orçamentos/Faturas. **Falta:** Tarefas (não incluída ainda).
+- [x] **Passo 73a** *(não estava numerado, adicionado por pedido)*. Página de **Definições** (`/definicoes`) — separadores Perfil e Workspace, usando os componentes prontos do Clerk (`UserProfile`, `OrganizationProfile`) em vez de formulários próprios: avatar, nome, email, segurança, e renomear/apagar workspace já vêm de fábrica. Último item da sidebar por construir que não depende de contas externas (R2/Brevo/Stripe) — só ficam **Portal do cliente** e **Integrações**.
 
 ---
 
