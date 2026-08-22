@@ -4,8 +4,9 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
-import { jobs, quotes } from "@/db/schema";
+import { clients, jobs, quotes } from "@/db/schema";
 import { AUTOMATION_KEYS, isAutomationActive } from "@/lib/automations";
+import { notifyWorkspace } from "@/lib/notifications";
 
 export async function respondToQuote(
   token: string,
@@ -46,6 +47,18 @@ export async function respondToQuote(
       .update(quotes)
       .set({ status: "aceite", respondedAt: new Date(), jobId })
       .where(eq(quotes.id, quote.id));
+
+    const [client] = await db
+      .select({ name: clients.name })
+      .from(clients)
+      .where(eq(clients.id, quote.clientId));
+
+    await notifyWorkspace(quote.workspaceId, {
+      type: "orcamento_aceite",
+      title: "Orçamento aceite",
+      body: client?.name,
+      href: jobId ? `/trabalhos/${jobId}` : "/orcamentos",
+    });
   } else {
     await db
       .update(quotes)

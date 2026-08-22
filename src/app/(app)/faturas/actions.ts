@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
-import { invoiceItems, invoices } from "@/db/schema";
+import { clients, invoiceItems, invoices } from "@/db/schema";
+import { notifyWorkspace } from "@/lib/notifications";
 import { getCurrentWorkspace } from "@/lib/workspace";
 
 import { invoiceFormSchema, type InvoiceFormValues } from "./schema";
@@ -58,10 +59,23 @@ export async function markInvoicePaid(invoiceId: string) {
     throw new Error("Sem workspace ativo.");
   }
 
-  await db
+  const [invoice] = await db
     .update(invoices)
     .set({ status: "paga", paidAt: new Date() })
-    .where(eq(invoices.id, invoiceId));
+    .where(eq(invoices.id, invoiceId))
+    .returning();
+
+  const [client] = await db
+    .select({ name: clients.name })
+    .from(clients)
+    .where(eq(clients.id, invoice.clientId));
+
+  await notifyWorkspace(workspace.id, {
+    type: "pagamento_recebido",
+    title: "Pagamento recebido",
+    body: `Fatura #${invoice.number}${client ? " · " + client.name : ""}`,
+    href: "/pagamentos",
+  });
 
   revalidatePath("/faturas");
   revalidatePath("/pagamentos");

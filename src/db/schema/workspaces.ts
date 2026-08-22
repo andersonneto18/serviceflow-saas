@@ -1,4 +1,5 @@
 import {
+  boolean,
   pgEnum,
   pgTable,
   text,
@@ -40,6 +41,9 @@ export const workspaceMembers = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     role: workspaceMemberRole("role").notNull().default("profissional"),
+    notificationsEnabled: boolean("notifications_enabled")
+      .notNull()
+      .default(true),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => [

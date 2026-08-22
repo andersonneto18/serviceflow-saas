@@ -7,4 +7,5 @@ export * from "./quotes";
 export * from "./tasks";
 export * from "./messages";
 export * from "./invoices";
+export * from "./notifications";
 export * from "./automations";

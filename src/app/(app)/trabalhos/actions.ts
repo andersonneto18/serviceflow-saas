@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { invoiceItems, invoices, jobs } from "@/db/schema";
 import { AUTOMATION_KEYS, isAutomationActive } from "@/lib/automations";
+import { notifyUser } from "@/lib/notifications";
 import { ensureUserSynced } from "@/lib/team";
 import { getCurrentWorkspace } from "@/lib/workspace";
 
@@ -23,17 +24,29 @@ export async function createJob(values: JobFormValues) {
     await ensureUserSynced(parsed.assignedToUserId);
   }
 
-  await db.insert(jobs).values({
-    workspaceId: workspace.id,
-    clientId: parsed.clientId,
-    serviceId: parsed.serviceId || null,
-    assignedToUserId: parsed.assignedToUserId || null,
-    title: parsed.title,
-    status: parsed.status,
-    location: parsed.location || null,
-    scheduledAt: parsed.scheduledAt ? new Date(parsed.scheduledAt) : null,
-    value: parsed.value || null,
-  });
+  const [job] = await db
+    .insert(jobs)
+    .values({
+      workspaceId: workspace.id,
+      clientId: parsed.clientId,
+      serviceId: parsed.serviceId || null,
+      assignedToUserId: parsed.assignedToUserId || null,
+      title: parsed.title,
+      status: parsed.status,
+      location: parsed.location || null,
+      scheduledAt: parsed.scheduledAt ? new Date(parsed.scheduledAt) : null,
+      value: parsed.value || null,
+    })
+    .returning();
+
+  if (parsed.assignedToUserId) {
+    await notifyUser(workspace.id, parsed.assignedToUserId, {
+      type: "trabalho_atribuido",
+      title: "Novo trabalho atribuído",
+      body: job.title,
+      href: `/trabalhos/${job.id}`,
+    });
+  }
 
   revalidatePath("/trabalhos");
 }

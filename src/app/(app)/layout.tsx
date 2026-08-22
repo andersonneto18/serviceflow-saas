@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-import { Bell, Plus } from "lucide-react";
+import { NotificationBell } from "@/components/notification-bell";
+import { Plus } from "lucide-react";
 
 const CREATE_OPTIONS = [
   "Novo cliente",
@@ -43,10 +44,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           </div>
           <div className="flex items-center gap-2">
             <CommandMenu />
-            <Button variant="outline" size="icon" aria-label="Notificações" className="relative">
-              <Bell />
-              <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-destructive" />
-            </Button>
+            <NotificationBell />
             <DropdownMenu>
               <DropdownMenuTrigger render={<Button size="sm" />}>
                 <Plus />

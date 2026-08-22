@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
 import { tasks } from "@/db/schema";
+import { notifyUser } from "@/lib/notifications";
 import { ensureUserSynced } from "@/lib/team";
 import { getCurrentWorkspace } from "@/lib/workspace";
 
@@ -22,15 +23,27 @@ export async function createTask(values: TaskFormValues) {
     await ensureUserSynced(parsed.assignedToUserId);
   }
 
-  await db.insert(tasks).values({
-    workspaceId: workspace.id,
-    title: parsed.title,
-    description: parsed.description || null,
-    priority: parsed.priority,
-    dueDate: parsed.dueDate ? new Date(parsed.dueDate) : null,
-    clientId: parsed.clientId || null,
-    assignedToUserId: parsed.assignedToUserId || null,
-  });
+  const [task] = await db
+    .insert(tasks)
+    .values({
+      workspaceId: workspace.id,
+      title: parsed.title,
+      description: parsed.description || null,
+      priority: parsed.priority,
+      dueDate: parsed.dueDate ? new Date(parsed.dueDate) : null,
+      clientId: parsed.clientId || null,
+      assignedToUserId: parsed.assignedToUserId || null,
+    })
+    .returning();
+
+  if (parsed.assignedToUserId) {
+    await notifyUser(workspace.id, parsed.assignedToUserId, {
+      type: "tarefa_atribuida",
+      title: "Nova tarefa atribuída",
+      body: task.title,
+      href: "/tarefas",
+    });
+  }
 
   revalidatePath("/tarefas");
 }
