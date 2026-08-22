@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
-import { Plus } from "lucide-react";
+import { Download, Plus } from "lucide-react";
 
 import { db } from "@/db";
 import { clients, invoices } from "@/db/schema";
@@ -119,10 +119,20 @@ export default async function FaturasPage() {
                       })}
                     </TableCell>
                     <TableCell>
-                      {invoice.status !== "paga" &&
-                        invoice.status !== "cancelada" && (
-                          <MarkPaidButton invoiceId={invoice.id} />
-                        )}
+                      <div className="flex items-center justify-end gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          render={<Link href={`/faturas/${invoice.id}/pdf`} />}
+                        >
+                          <Download />
+                          PDF
+                        </Button>
+                        {invoice.status !== "paga" &&
+                          invoice.status !== "cancelada" && (
+                            <MarkPaidButton invoiceId={invoice.id} />
+                          )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
