@@ -78,7 +78,7 @@ const comunicacaoNav: NavItem[] = [
 
 const sistemaNav: NavItem[] = [
   { title: "Integrações", url: "#", icon: Plug, disabled: true },
-  { title: "Definições", url: "#", icon: Settings, disabled: true },
+  { title: "Definições", url: "/definicoes", icon: Settings },
 ];
 
 function NavGroup({
