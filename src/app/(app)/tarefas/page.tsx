@@ -5,8 +5,10 @@ import { clients, tasks, users } from "@/db/schema";
 import { getWorkspaceMembers } from "@/lib/team";
 import { getCurrentWorkspace } from "@/lib/workspace";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { NewTaskDialog } from "./new-task-dialog";
+import { TaskBoard } from "./task-board";
 import { TaskCheckbox } from "./task-checkbox";
 
 const PRIORITY_LABEL: Record<string, string> = {
@@ -67,39 +69,52 @@ export default async function TarefasPage() {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col rounded-lg border">
-          {taskRows.map((task) => (
-            <div
-              key={task.id}
-              className="flex items-center gap-3 border-b p-4 last:border-b-0"
-            >
-              <TaskCheckbox taskId={task.id} done={task.status === "done"} />
-              <div className="min-w-0 flex-1">
-                <p
-                  className={
-                    task.status === "done"
-                      ? "truncate text-sm font-medium text-muted-foreground line-through"
-                      : "truncate text-sm font-medium"
-                  }
+        <Tabs defaultValue="list">
+          <TabsList>
+            <TabsTrigger value="list">Lista</TabsTrigger>
+            <TabsTrigger value="board">Kanban</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="list">
+            <div className="flex flex-col rounded-lg border">
+              {taskRows.map((task) => (
+                <div
+                  key={task.id}
+                  className="flex items-center gap-3 border-b p-4 last:border-b-0"
                 >
-                  {task.title}
-                </p>
-                <p className="truncate text-xs text-muted-foreground">
-                  {task.clientName ?? "Sem cliente"}
-                  {task.assignedToName && ` · ${task.assignedToName}`}
-                  {task.dueDate &&
-                    ` · ${new Date(task.dueDate).toLocaleDateString("pt-PT")}`}
-                </p>
-              </div>
-              <Badge
-                variant="secondary"
-                className={PRIORITY_VARIANT[task.priority]}
-              >
-                {PRIORITY_LABEL[task.priority]}
-              </Badge>
+                  <TaskCheckbox taskId={task.id} done={task.status === "done"} />
+                  <div className="min-w-0 flex-1">
+                    <p
+                      className={
+                        task.status === "done"
+                          ? "truncate text-sm font-medium text-muted-foreground line-through"
+                          : "truncate text-sm font-medium"
+                      }
+                    >
+                      {task.title}
+                    </p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {task.clientName ?? "Sem cliente"}
+                      {task.assignedToName && ` · ${task.assignedToName}`}
+                      {task.dueDate &&
+                        ` · ${new Date(task.dueDate).toLocaleDateString("pt-PT")}`}
+                    </p>
+                  </div>
+                  <Badge
+                    variant="secondary"
+                    className={PRIORITY_VARIANT[task.priority]}
+                  >
+                    {PRIORITY_LABEL[task.priority]}
+                  </Badge>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </TabsContent>
+
+          <TabsContent value="board">
+            <TaskBoard tasks={taskRows} />
+          </TabsContent>
+        </Tabs>
       )}
     </div>
   );

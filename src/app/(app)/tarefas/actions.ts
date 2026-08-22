@@ -35,7 +35,10 @@ export async function createTask(values: TaskFormValues) {
   revalidatePath("/tarefas");
 }
 
-export async function toggleTaskDone(taskId: string, done: boolean) {
+export async function updateTaskStatus(
+  taskId: string,
+  status: "todo" | "in_progress" | "done"
+) {
   const workspace = await getCurrentWorkspace();
   if (!workspace) {
     throw new Error("Sem workspace ativo.");
@@ -43,8 +46,12 @@ export async function toggleTaskDone(taskId: string, done: boolean) {
 
   await db
     .update(tasks)
-    .set({ status: done ? "done" : "todo", updatedAt: new Date() })
+    .set({ status, updatedAt: new Date() })
     .where(eq(tasks.id, taskId));
 
   revalidatePath("/tarefas");
+}
+
+export async function toggleTaskDone(taskId: string, done: boolean) {
+  await updateTaskStatus(taskId, done ? "done" : "todo");
 }
