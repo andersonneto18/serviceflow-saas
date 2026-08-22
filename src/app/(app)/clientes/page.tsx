@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
 
 import { db } from "@/db";
@@ -66,7 +67,14 @@ export default async function ClientesPage() {
             <TableBody>
               {rows.map((client) => (
                 <TableRow key={client.id}>
-                  <TableCell className="font-medium">{client.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <Link
+                      href={`/clientes/${client.id}`}
+                      className="hover:text-primary hover:underline"
+                    >
+                      {client.name}
+                    </Link>
+                  </TableCell>
                   <TableCell className="text-muted-foreground">
                     {client.company || "—"}
                   </TableCell>
