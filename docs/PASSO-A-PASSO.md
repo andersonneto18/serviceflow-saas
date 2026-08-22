@@ -113,7 +113,7 @@
 
 - [x] **Passo 51.** Schema Drizzle: `invoices` (com número automático via `generatedAlwaysAsIdentity`), `invoice_items`. **Simplificação:** não criámos tabela `payments` separada — Pagamentos é uma vista calculada sobre `invoices.status`/`dueDate` (evita dois conceitos de estado a divergir). Se um dia precisarmos de pagamentos parciais por fatura, criamos `payments` nessa altura.
 - [x] **Passo 52.** Página de listagem de Faturas (Número/Cliente/Vencimento/Estado/Valor) + criar (builder de itens, igual ao de Orçamentos) + enviar + marcar como paga. Editar ainda não foi feito.
-- [ ] **Passo 53.** Geração de PDF da fatura — por fazer.
+- [x] **Passo 53.** Geração de PDF da fatura — biblioteca `@react-pdf/renderer`, gerado a pedido em `/faturas/[id]/pdf` (sem guardar o PDF em lado nenhum, cria na hora), botão "PDF" na listagem de Faturas.
 - [x] **Passo 54.** Página de Pagamentos — cards Recebido este mês/Pendente/Atrasado calculados a partir das faturas, + lista. "Atrasado" é calculado (enviada + vencimento passado), não guardado.
 - [ ] **Passo 55.** Configurar conta Stripe (modo teste) e Stripe Billing para os planos da SaaS (Free/Pro/Business).
 - [ ] **Passo 56.** Configurar Stripe Connect para pagamento cliente→profissional.
