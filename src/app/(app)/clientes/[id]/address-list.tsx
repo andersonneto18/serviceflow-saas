@@ -4,6 +4,7 @@ import { useRef, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { MapLink } from "@/components/map-link";
 
 import { addClientAddress } from "./actions";
 
@@ -31,19 +32,28 @@ export function AddressList({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-2">
-        {addresses.map((address) => (
-          <div key={address.id} className="rounded-md border p-3 text-sm">
-            {address.label && (
-              <p className="text-xs font-medium text-muted-foreground">
-                {address.label}
-              </p>
-            )}
-            <p>
-              {address.street}, {address.city}
-              {address.postalCode && ` · ${address.postalCode}`}
-            </p>
-          </div>
-        ))}
+        {addresses.map((address) => {
+          const full = `${address.street}, ${address.city}${address.postalCode ? " " + address.postalCode : ""}`;
+          return (
+            <div
+              key={address.id}
+              className="flex items-center justify-between rounded-md border p-3 text-sm"
+            >
+              <div>
+                {address.label && (
+                  <p className="text-xs font-medium text-muted-foreground">
+                    {address.label}
+                  </p>
+                )}
+                <p>
+                  {address.street}, {address.city}
+                  {address.postalCode && ` · ${address.postalCode}`}
+                </p>
+              </div>
+              <MapLink address={full} />
+            </div>
+          );
+        })}
         {addresses.length === 0 && (
           <p className="text-sm text-muted-foreground">
             Sem moradas registadas.

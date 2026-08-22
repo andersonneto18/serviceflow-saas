@@ -16,6 +16,7 @@ import { getCurrentWorkspace } from "@/lib/workspace";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MapLink } from "@/components/map-link";
 
 import { JobStatusSelect } from "../job-status-select";
 import { MaterialList } from "./material-list";
@@ -127,6 +128,11 @@ export default async function JobDetailPage({
               <div>
                 <p className="text-xs font-medium text-muted-foreground">Localização</p>
                 <p className="text-sm">{job.location ?? "—"}</p>
+                {job.location && (
+                  <div className="mt-1 -ml-2">
+                    <MapLink address={job.location} />
+                  </div>
+                )}
               </div>
               <div>
                 <p className="text-xs font-medium text-muted-foreground">Valor</p>

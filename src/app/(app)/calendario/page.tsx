@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { clients, jobs } from "@/db/schema";
 import { getCurrentWorkspace } from "@/lib/workspace";
 import { Badge } from "@/components/ui/badge";
+import { MapLink } from "@/components/map-link";
 
 const STATUS_LABEL: Record<string, string> = {
   rascunho: "Rascunho",
@@ -115,6 +116,7 @@ export default async function CalendarioPage() {
                         {job.location && ` · ${job.location}`}
                       </p>
                     </div>
+                    {job.location && <MapLink address={job.location} />}
                     <Badge
                       variant="secondary"
                       className={STATUS_VARIANT[job.status]}
