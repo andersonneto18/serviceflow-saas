@@ -142,10 +142,10 @@ export function AppSidebar({ workspaceName }: { workspaceName?: string }) {
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-1.5">
           <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
-            S
+            N
           </div>
           <span className="truncate text-sm font-semibold tracking-tight group-data-[collapsible=icon]:hidden">
-            {workspaceName ?? "Serviza"}
+            {workspaceName ?? "NetoWork"}
           </span>
         </div>
       </SidebarHeader>
