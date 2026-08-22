@@ -153,7 +153,7 @@
 - [ ] **Passo 78.** Configuração de moeda/data/impostos por workspace/país.
 - [ ] **Passo 79.** Otimização mobile: bottom navigation, captura de foto nativa, assinatura do cliente no ecrã.
 - [ ] **Passo 80.** Configurar PostHog (analytics de uso).
-- [ ] **Passo 81.** Rever identidade visual final (cores, logo, nome definitivo da app).
+- [ ] **Passo 81.** Rever identidade visual final (cores, logo, nome definitivo da app). **Nome escolhido: NetoWork** (já aplicado — sidebar, título da aba, páginas de login/registo). Falta: favicon próprio (ainda é o do Next.js) e um logótipo desenhado a sério (hoje é só a letra "N" num quadrado).
 - [ ] **Passo 82.** Deploy de produção no Vercel + domínio próprio.
 - [ ] **Passo 83.** (Opcional, mais tarde) Avaliar app nativa mobile.
 
