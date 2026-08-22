@@ -71,7 +71,7 @@
 
 - [x] **Passo 32.** Página de listagem de Clientes — dados reais da base de dados (filtrados por workspace), já sem exemplos fixos. **Falta:** os filtros Todos/Ativos/Potenciais/Inativos (fica para uma iteração seguinte).
 - [x] **Passo 33.** Formulário de criar cliente (Zod + React Hook Form, num diálogo) — grava via Server Action (`actions.ts`) diretamente na base de dados. Editar cliente ainda não foi feito.
-- [ ] **Passo 34.** Página de detalhe do cliente com separadores: Perfil, Histórico, Orçamentos, Notas (Faturas/Pagamentos/Documentos entram na Fase 3).
+- [x] **Passo 34.** Página de detalhe do cliente (`/clientes/[id]`) com separadores: Perfil (+ moradas), Histórico (trabalhos), Orçamentos, Notas (editável).
 
 ### 2.4 Serviços
 
