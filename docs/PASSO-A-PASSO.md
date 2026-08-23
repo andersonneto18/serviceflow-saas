@@ -42,7 +42,8 @@
 - [x] **Passo 15.** Criar `drizzle.config.ts` a apontar para a base de dados Neon — testado com `drizzle-kit generate`, liga corretamente.
 - [x] **Passo 16.** Criar a pasta `src/db/schema` e o ficheiro de conexão à base de dados (`src/db/index.ts`) — schema ainda vazio, tabelas entram no Passo 21+.
 - [x] **Passo 17.** Instalar Clerk (`@clerk/nextjs`) e configurar o `src/proxy.ts` (substitui o `middleware.ts` no Next.js 16) de proteção de rotas — feito via Clerk CLI, tipo de projeto **B2B** com Organizações ativas (mapeiam para os nossos Workspaces), Email + Google como métodos de login.
-- [x] **Passo 18.** Envolver a app no `<ClerkProvider>` (com tema shadcn via `@clerk/ui`), páginas `/sign-in` e `/sign-up` criadas, grupo `(app)` protegido (redireciona para `/sign-in` se não autenticado) — confirmado a funcionar. Sidebar já mostra o utilizador real (nome/email/avatar) em vez de dados fixos. **Falta:** criar a sua primeira conta de teste (fazer sign-up na app) para confirmarmos o fluxo ponta a ponta.
+- [x] **Passo 18.** Envolver a app no `<ClerkProvider>` (com tema shadcn via `@clerk/ui`), páginas `/sign-in` e `/sign-up` criadas, grupo `(app)` protegido (redireciona para `/sign-in` se não autenticado) — confirmado a funcionar. Sidebar já mostra o utilizador real (nome/email/avatar) em vez de dados fixos. Conta de teste já criada e fluxo ponta a ponta confirmado.
+- [x] **Passo 18a** *(não estava numerado, corrigido por pedido)*. Idioma do Clerk estava em inglês por defeito (login, registo, Perfil/Workspace em Definições) — instalado `@clerk/localizations`, aplicado `ptPT` no `ClerkProvider`. Testado: "Sign in" → "Entrar", "Continue with" → "Continuar com".
 - [x] **Passo 19.** Instalar `zod` e `react-hook-form` (`@hookform/resolvers`).
 - [x] **Passo 20.** Fazer o primeiro commit git (`fundação do projeto`) — feito há muitas mensagens, já com dezenas de commits desde então.
 
