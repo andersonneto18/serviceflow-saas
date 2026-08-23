@@ -121,9 +121,12 @@
 - [ ] **Passo 56.** Configurar Stripe Connect para pagamento cliente→profissional.
 - [ ] **Passo 57.** Ligar botão "Pagar agora" da fatura ao Stripe Checkout/Payment Link.
 - [ ] **Passo 58.** Webhook Stripe para atualizar estado da fatura/pagamento automaticamente.
-- [ ] **Passo 59.** Configurar Cloudflare R2 (bucket + credenciais) e SDK de upload no backend.
-- [ ] **Passo 60.** Upload de fotografias no trabalho (antes/depois), guardando só a referência (`job_photos`) na BD.
-- [ ] **Passo 61.** Upload de documentos no cliente.
+- [x] **Passo 59.** Configurar Cloudflare R2 (bucket `appglobal`, dedicado — não partilha token com outros projetos do utilizador) e SDK (`@aws-sdk/client-s3`, `src/lib/r2.ts`). Testado com upload real (script isolado), confirmado a funcionar. **Falta:** `R2_PUBLIC_URL` (ativar "URL de desenvolvimento público" no bucket) — sem isto, os ficheiros fazem upload mas o link para os ver ainda não funciona.
+- [x] **Passo 60.** Upload de fotografias no trabalho — separador "Fotos" na página de detalhe, grelha de miniaturas, `job_photos.url` guardado.
+- [x] **Passo 61.** Upload de documentos no cliente — nova tabela `client_documents` (não existia), separador "Documentos" na página de detalhe do cliente.
+
+**Lembrete importante:** as variáveis `R2_*` só estão no `.env.local` (a sua máquina). Para o upload funcionar também no site em produção (Vercel), é preciso adicioná-las lá também — painel da Vercel → o projeto → Settings → Environment Variables.
+
 - [ ] **Passo 62.** Configurar Resend + template de email "Orçamento aprovado".
 - [ ] **Passo 63.** Configurar Resend + template de email "Lembrete de visita".
 - [ ] **Passo 64.** Criar área pública **Portal do cliente** (login separado ou magic link): ver trabalhos, orçamentos, faturas, pagar, enviar mensagens/fotos, ver documentos e próximas marcações.
