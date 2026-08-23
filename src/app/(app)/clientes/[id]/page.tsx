@@ -3,13 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { db } from "@/db";
-import { clientAddresses, clients, jobs, quotes } from "@/db/schema";
+import { clientAddresses, clientDocuments, clients, jobs, quotes } from "@/db/schema";
 import { getCurrentWorkspace } from "@/lib/workspace";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { AddressList } from "./address-list";
+import { DocumentUpload } from "./document-upload";
 import { NotesEditor } from "./notes-editor";
 
 const CLIENT_STATUS_LABEL: Record<string, string> = {
@@ -47,7 +48,7 @@ export default async function ClientDetailPage({
   const [client] = await db.select().from(clients).where(eq(clients.id, id));
   if (!client) notFound();
 
-  const [addresses, clientJobs, clientQuotes] = await Promise.all([
+  const [addresses, clientJobs, clientQuotes, documents] = await Promise.all([
     db
       .select()
       .from(clientAddresses)
@@ -62,6 +63,10 @@ export default async function ClientDetailPage({
       .from(quotes)
       .where(eq(quotes.clientId, id))
       .orderBy(desc(quotes.createdAt)),
+    db
+      .select()
+      .from(clientDocuments)
+      .where(eq(clientDocuments.clientId, id)),
   ]);
 
   return (
@@ -82,6 +87,7 @@ export default async function ClientDetailPage({
           <TabsTrigger value="history">Histórico</TabsTrigger>
           <TabsTrigger value="quotes">Orçamentos</TabsTrigger>
           <TabsTrigger value="notes">Notas</TabsTrigger>
+          <TabsTrigger value="documents">Documentos</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile">
@@ -163,6 +169,14 @@ export default async function ClientDetailPage({
           <Card>
             <CardContent>
               <NotesEditor clientId={client.id} initialNotes={client.notes ?? ""} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="documents">
+          <Card>
+            <CardContent>
+              <DocumentUpload clientId={client.id} documents={documents} />
             </CardContent>
           </Card>
         </TabsContent>

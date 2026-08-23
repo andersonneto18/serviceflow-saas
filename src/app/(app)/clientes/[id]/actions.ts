@@ -4,7 +4,8 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
-import { clientAddresses, clients } from "@/db/schema";
+import { clientAddresses, clientDocuments, clients } from "@/db/schema";
+import { uploadToR2 } from "@/lib/r2";
 
 export async function updateClientNotes(clientId: string, notes: string) {
   await db
@@ -32,6 +33,32 @@ export async function addClientAddress(
     street: values.street.trim(),
     city: values.city.trim(),
     postalCode: values.postalCode || null,
+  });
+
+  revalidatePath(`/clientes/${clientId}`);
+}
+
+export async function uploadClientDocument(
+  clientId: string,
+  formData: FormData
+) {
+  const file = formData.get("document") as File | null;
+  if (!file || file.size === 0) return;
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const extension = file.name.split(".").pop() || "pdf";
+  const key = `clients/${clientId}/${crypto.randomUUID()}.${extension}`;
+
+  const url = await uploadToR2(
+    key,
+    buffer,
+    file.type || "application/octet-stream"
+  );
+
+  await db.insert(clientDocuments).values({
+    clientId,
+    name: file.name,
+    url,
   });
 
   revalidatePath(`/clientes/${clientId}`);

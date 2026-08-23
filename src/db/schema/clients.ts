@@ -38,3 +38,15 @@ export const clientAddresses = pgTable("client_addresses", {
   country: text("country").notNull().default("PT"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+// Documentos do cliente (secção 4.4 da documentação). Só guardamos o link
+// (Cloudflare R2) — o ficheiro em si nunca fica na base de dados.
+export const clientDocuments = pgTable("client_documents", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  clientId: uuid("client_id")
+    .notNull()
+    .references(() => clients.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  url: text("url").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});

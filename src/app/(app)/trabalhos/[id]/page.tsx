@@ -7,6 +7,7 @@ import {
   invoices,
   jobMaterials,
   jobNotes,
+  jobPhotos,
   jobTasks,
   jobs,
   services,
@@ -21,6 +22,7 @@ import { MapLink } from "@/components/map-link";
 import { JobStatusSelect } from "../job-status-select";
 import { MaterialList } from "./material-list";
 import { NoteList } from "./note-list";
+import { PhotoUpload } from "./photo-upload";
 import { TaskList } from "./task-list";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -64,10 +66,11 @@ export default async function JobDetailPage({
 
   if (!job) notFound();
 
-  const [tasks, materials, notes, [invoice]] = await Promise.all([
+  const [tasks, materials, notes, photos, [invoice]] = await Promise.all([
     db.select().from(jobTasks).where(eq(jobTasks.jobId, id)).orderBy(asc(jobTasks.position)),
     db.select().from(jobMaterials).where(eq(jobMaterials.jobId, id)),
     db.select().from(jobNotes).where(eq(jobNotes.jobId, id)).orderBy(asc(jobNotes.createdAt)),
+    db.select().from(jobPhotos).where(eq(jobPhotos.jobId, id)),
     db.select().from(invoices).where(eq(invoices.jobId, id)),
   ]);
 
@@ -90,6 +93,7 @@ export default async function JobDetailPage({
           <TabsTrigger value="tasks">Tarefas</TabsTrigger>
           <TabsTrigger value="materials">Materiais</TabsTrigger>
           <TabsTrigger value="notes">Notas</TabsTrigger>
+          <TabsTrigger value="photos">Fotos</TabsTrigger>
           <TabsTrigger value="timeline">Timeline</TabsTrigger>
         </TabsList>
 
@@ -169,6 +173,14 @@ export default async function JobDetailPage({
           <Card>
             <CardContent>
               <NoteList jobId={job.id} notes={notes} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="photos">
+          <Card>
+            <CardContent>
+              <PhotoUpload jobId={job.id} photos={photos} />
             </CardContent>
           </Card>
         </TabsContent>
