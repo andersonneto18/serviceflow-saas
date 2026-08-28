@@ -27,10 +27,13 @@ export async function getNotifications() {
 }
 
 export async function markNotificationRead(id: string) {
+  const { userId } = await auth();
+  if (!userId) return;
+
   await db
     .update(notifications)
     .set({ read: true })
-    .where(eq(notifications.id, id));
+    .where(and(eq(notifications.id, id), eq(notifications.userId, userId)));
   revalidatePath("/", "layout");
 }
 

@@ -1,21 +1,46 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
-import { jobMaterials, jobNotes, jobPhotos, jobTasks } from "@/db/schema";
+import { jobMaterials, jobNotes, jobPhotos, jobTasks, jobs } from "@/db/schema";
 import { uploadToR2 } from "@/lib/r2";
+import { getCurrentWorkspace } from "@/lib/workspace";
+
+/**
+ * Confirma que este trabalho pertence ao workspace de quem está a pedir.
+ * job_tasks/job_materials/job_notes/job_photos não têm workspaceId próprio
+ * (só jobId) — sem este passo, qualquer pessoa autenticada, em qualquer
+ * workspace, conseguia mexer em trabalhos de outros workspaces só por
+ * saber o UUID do trabalho.
+ */
+async function assertJobAccess(jobId: string) {
+  const workspace = await getCurrentWorkspace();
+  if (!workspace) throw new Error("Sem workspace ativo.");
+
+  const [job] = await db
+    .select({ id: jobs.id })
+    .from(jobs)
+    .where(and(eq(jobs.id, jobId), eq(jobs.workspaceId, workspace.id)));
+
+  if (!job) throw new Error("Trabalho não encontrado neste workspace.");
+}
 
 export async function addJobTask(jobId: string, title: string) {
   if (!title.trim()) return;
+  await assertJobAccess(jobId);
   await db.insert(jobTasks).values({ jobId, title: title.trim() });
   revalidatePath(`/trabalhos/${jobId}`);
 }
 
 export async function toggleJobTask(jobId: string, taskId: string, done: boolean) {
-  await db.update(jobTasks).set({ done }).where(eq(jobTasks.id, taskId));
+  await assertJobAccess(jobId);
+  await db
+    .update(jobTasks)
+    .set({ done })
+    .where(and(eq(jobTasks.id, taskId), eq(jobTasks.jobId, jobId)));
   revalidatePath(`/trabalhos/${jobId}`);
 }
 
@@ -26,6 +51,7 @@ export async function addJobMaterial(
   unitPrice: string
 ) {
   if (!description.trim()) return;
+  await assertJobAccess(jobId);
   await db.insert(jobMaterials).values({
     jobId,
     description: description.trim(),
@@ -37,6 +63,7 @@ export async function addJobMaterial(
 
 export async function addJobNote(jobId: string, body: string) {
   if (!body.trim()) return;
+  await assertJobAccess(jobId);
   const { userId } = await auth();
   await db.insert(jobNotes).values({
     jobId,
@@ -49,6 +76,7 @@ export async function addJobNote(jobId: string, body: string) {
 export async function uploadJobPhoto(jobId: string, formData: FormData) {
   const file = formData.get("photo") as File | null;
   if (!file || file.size === 0) return;
+  await assertJobAccess(jobId);
 
   const buffer = Buffer.from(await file.arrayBuffer());
   const extension = file.name.split(".").pop() || "jpg";

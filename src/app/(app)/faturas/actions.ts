@@ -1,6 +1,6 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
@@ -62,8 +62,14 @@ export async function markInvoicePaid(invoiceId: string) {
   const [invoice] = await db
     .update(invoices)
     .set({ status: "paga", paidAt: new Date() })
-    .where(eq(invoices.id, invoiceId))
+    .where(
+      and(eq(invoices.id, invoiceId), eq(invoices.workspaceId, workspace.id))
+    )
     .returning();
+
+  if (!invoice) {
+    throw new Error("Fatura não encontrada neste workspace.");
+  }
 
   const [client] = await db
     .select({ name: clients.name })

@@ -1,6 +1,6 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
@@ -57,10 +57,15 @@ export async function updateTaskStatus(
     throw new Error("Sem workspace ativo.");
   }
 
-  await db
+  const [task] = await db
     .update(tasks)
     .set({ status, updatedAt: new Date() })
-    .where(eq(tasks.id, taskId));
+    .where(and(eq(tasks.id, taskId), eq(tasks.workspaceId, workspace.id)))
+    .returning();
+
+  if (!task) {
+    throw new Error("Tarefa não encontrada neste workspace.");
+  }
 
   revalidatePath("/tarefas");
 }

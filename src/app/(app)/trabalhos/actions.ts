@@ -1,6 +1,6 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
@@ -63,8 +63,12 @@ export async function updateJobStatus(
   const [job] = await db
     .update(jobs)
     .set({ status, updatedAt: new Date() })
-    .where(eq(jobs.id, jobId))
+    .where(and(eq(jobs.id, jobId), eq(jobs.workspaceId, workspace.id)))
     .returning();
+
+  if (!job) {
+    throw new Error("Trabalho não encontrado neste workspace.");
+  }
 
   if (status === "concluido") {
     // Automação (secção 18 da documentação): trabalho concluído -> cria
