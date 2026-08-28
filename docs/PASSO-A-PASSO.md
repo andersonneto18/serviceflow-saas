@@ -25,7 +25,7 @@
 - [x] **Passo 3.** Inicializar repositório git no diretório do projeto (`git init`).
 - [x] **Passo 4.** Criar conta e projeto novo no [Neon](https://neon.tech) (Postgres) e guardar a connection string — guardada em `.env.local` (`DATABASE_URL`).
 - [x] **Passo 5.** Criar conta no [Clerk](https://clerk.com) e criar uma aplicação nova (guardar as chaves de API).
-- [ ] **Passo 6.** Criar conta no [Cloudflare](https://cloudflare.com) para o R2 — ainda por fazer, só é preciso quando ligarmos upload de fotos/documentos.
+- [x] **Passo 6.** Criar conta no [Cloudflare](https://cloudflare.com) para o R2 — feito, bucket `appglobal` dedicado, ligado nos Passos 59-61.
 - [x] **Passo 7.** Criar conta no [Vercel](https://vercel.com) ligada ao GitHub — já em produção, deploy automático a cada `git push`.
 
 ---
