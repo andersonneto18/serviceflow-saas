@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌐 AppGlobal
 
-## Getting Started
+**AppGlobal** is a SaaS platform designed for professionals and companies that provide services.
 
-First, run the development server:
+It brings clients, quotes, jobs, invoices, payments and team management into one centralized platform — reducing the need to manage a business across WhatsApp, spreadsheets and paperwork.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The project is currently under active development and was created as a personal full-stack project to apply the complete product development process, from database architecture to the final user interface.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 💡 The Idea
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Service businesses often manage their daily operations using multiple disconnected tools.
 
-## Learn More
+AppGlobal aims to provide a single workspace for professionals such as:
 
-To learn more about Next.js, take a look at the following resources:
+- Electricians
+- Plumbers
+- Gardeners
+- Photographers
+- Cleaning companies
+- Maintenance businesses
+- Other service-based professionals and companies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The goal is to simplify business operations and centralize the complete service workflow.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🚀 Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 👥 Client Management
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Manage customer information and maintain an organized client database.
+
+### 🛠️ Service Catalog
+
+Create and manage the services offered by the business.
+
+### 📄 Quotes
+
+Create professional quotes and generate public links that can be shared directly with clients.
+
+Clients can review and accept quotes online.
+
+When a quote is accepted, the corresponding job can be created automatically.
+
+### 📋 Job Management
+
+Manage active jobs with:
+
+- Checklists
+- Materials
+- Notes
+- Job information
+- Progress tracking
+
+### 🧾 Invoicing
+
+Create and manage invoices associated with completed or ongoing services.
+
+### 💳 Payment Tracking
+
+Track invoice and payment status directly within the platform.
+
+### ⚡ Automations
+
+Simple automations help reduce repetitive administrative tasks and streamline the workflow.
+
+---
+
+## 🔄 Workflow
+
+A typical workflow inside AppGlobal looks like this:
+
+```text
+Client
+   ↓
+Quote
+   ↓
+Online Acceptance
+   ↓
+Job Created
+   ↓
+Work Management
+   ↓
+Invoice
+   ↓
+Payment
